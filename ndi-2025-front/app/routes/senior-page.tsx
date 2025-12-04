@@ -29,7 +29,7 @@ export default function SeniorPage() {
 
           <div className="flex justify-center">
             <Link
-              to="/senior-form"
+              to="/elderly_form"
               className="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
             >
               Accéder au formulaire
