@@ -1,0 +1,16 @@
+com/shopifake/auth/dto/AuthResponse$AuthResponseBuilder.class
+com/shopifake/auth/config/SecurityConfig.class
+com/shopifake/auth/dto/KeycloakTokenResponse.class
+com/shopifake/auth/dto/LoginRequest.class
+com/shopifake/auth/dto/UserResponse.class
+com/shopifake/auth/AuthServiceApplication.class
+com/shopifake/auth/dto/AuthResponse.class
+com/shopifake/auth/config/KeycloakConfig.class
+com/shopifake/auth/dto/RegisterRequest.class
+com/shopifake/auth/config/WebConfig.class
+com/shopifake/auth/dto/RegisterRequest$RegisterRequestBuilder.class
+com/shopifake/auth/dto/LoginRequest$LoginRequestBuilder.class
+com/shopifake/auth/dto/KeycloakUserInfo.class
+com/shopifake/auth/dto/UserResponse$UserResponseBuilder.class
+com/shopifake/auth/controller/AuthController.class
+com/shopifake/auth/service/AuthService.class
