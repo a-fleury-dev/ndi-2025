@@ -43,6 +43,19 @@ export default function SeniorForm() {
         "Gazeux", "Liquide", "Solide", "Plasma", "Introuvable"
     ];
 
+    const EMAIL_WARNINGS = [
+        "ÊTES-VOUS SÛR DE VOULOIR NOUS DONNER ÇA ?",
+        "ATTENTION : Êtes-vous sûr de céder votre âme à nos partenaires tiers ?",
+        "CONFIRMATION : Acceptez-vous de recevoir 145 spams/heure ?",
+        "ALERTE : Votre vie privée est sur le point d'être vendue.",
+        "DANGER : Donner votre email pourrait vous être fatal.",
+        "QUESTION : Avez-vous lu les 800 pages des CGU ?",
+        "SÉCURITÉ : Êtes-vous vraiment qui vous prétendez être ?",
+        "STOP : Réfléchissez bien. Vraiment bien.",
+        "MONDIALISATION : Cette adresse sera stockée sur un serveur douteux.",
+        "HÉRITAGE : En tapant ceci, vous renoncez à vos droits successoraux."
+    ];
+
     const [lastRoll, setLastRoll] = useState<number | null>(null);
 
     // Génération des options horribles pour le téléphone (Memoizé pour ne pas changer à chaque render)
@@ -167,6 +180,111 @@ export default function SeniorForm() {
             start: {m: 2, d: 19}, end: {m: 3, d: 20}
         }
     };
+
+    // --- AJOUTER LA LISTE HISTORIQUE ---
+    const HISTORIQUE = [
+        {year: 1925, event: "Publication de Gatsby le Magnifique"},
+        {year: 1926, event: "Première démonstration de télévision"},
+        {year: 1927, event: "Lindbergh traverse l'Atlantique (avion)"},
+        {year: 1928, event: "Découverte de la pénicilline"},
+        {year: 1929, event: "Krach boursier de Wall Street"},
+        {year: 1930, event: "Première Coupe du monde (football)"},
+        {year: 1931, event: "Inauguration de l'Empire State Building"},
+        {year: 1932, event: "Découverte du neutron"},
+        {year: 1933, event: "Hitler devient chancelier"},
+        {year: 1934, event: "La Longue Marche (Chine)"},
+        {year: 1935, event: "Invention du radar"},
+        {year: 1936, event: "Guerre civile espagnole / Front populaire"},
+        {year: 1937, event: "Bombardement de Guernica"},
+        {year: 1938, event: "La Nuit de Cristal"},
+        {year: 1939, event: "Début de la Seconde Guerre mondiale"},
+        {year: 1940, event: "Appel du 18 Juin (De Gaulle)"},
+        {year: 1941, event: "Attaque de Pearl Harbor"},
+        {year: 1942, event: "Rafle du Vélodrome d'Hiver"},
+        {year: 1943, event: "Arrestation de Jean Moulin"},
+        {year: 1944, event: "Débarquement en Normandie"},
+        {year: 1945, event: "Bombes atomiques, fin de la guerre"},
+        {year: 1946, event: "Première assemblée de l'ONU"},
+        {year: 1947, event: "Indépendance de l'Inde"},
+        {year: 1948, event: "Déclaration universelle droits de l'homme"},
+        {year: 1949, event: "Création de l'OTAN"},
+        {year: 1950, event: "Début de la guerre de Corée"},
+        {year: 1951, event: "Première centrale nucléaire électrique"},
+        {year: 1952, event: "Élisabeth II devient reine"},
+        {year: 1953, event: "Découverte de la structure de l'ADN"},
+        {year: 1954, event: "Guerre d'Algérie / Diên Biên Phu"},
+        {year: 1955, event: "Rosa Parks refuse de céder sa place"},
+        {year: 1956, event: "Indépendance du Maroc et Tunisie"},
+        {year: 1957, event: "Spoutnik 1 dans l'espace"},
+        {year: 1958, event: "Naissance de la Ve République"},
+        {year: 1959, event: "Révolution cubaine (Fidel Castro)"},
+        {year: 1960, event: "Indépendance de 17 pays africains"},
+        {year: 1961, event: "Youri Gagarine, premier homme (espace)"},
+        {year: 1962, event: "Indépendance de l'Algérie"},
+        {year: 1963, event: "Assassinat de John F. Kennedy"},
+        {year: 1964, event: "Arrestation de Nelson Mandela"},
+        {year: 1965, event: "Escalade militaire au Vietnam"},
+        {year: 1966, event: "Révolution culturelle en Chine"},
+        {year: 1967, event: "Première greffe du cœur"},
+        {year: 1968, event: "Mouvements sociaux de Mai 68"},
+        {year: 1969, event: "L'Homme marche sur la Lune"},
+        {year: 1970, event: "Séparation des Beatles"},
+        {year: 1971, event: "Premier microprocesseur (Intel 4004)"},
+        {year: 1972, event: "Attentat des Jeux de Munich"},
+        {year: 1973, event: "Premier choc pétrolier"},
+        {year: 1974, event: "Démission de Richard Nixon"},
+        {year: 1975, event: "Fin de la guerre du Vietnam"},
+        {year: 1976, event: "Premier vol commercial du Concorde"},
+        {year: 1977, event: "Sortie de Star Wars"},
+        {year: 1978, event: "Naissance du premier bébé-éprouvette"},
+        {year: 1979, event: "Révolution islamique en Iran"},
+        {year: 1980, event: "Sortie du jeu Pac-Man"},
+        {year: 1981, event: "Abolition peine de mort (France)"},
+        {year: 1982, event: "Guerre des Malouines"},
+        {year: 1983, event: "Découverte du virus du Sida"},
+        {year: 1984, event: "Catastrophe industrielle de Bhopal"},
+        {year: 1985, event: "Accords de Schengen signés"},
+        {year: 1986, event: "Catastrophe nucléaire de Tchernobyl"},
+        {year: 1987, event: "Krach boursier d'octobre"},
+        {year: 1988, event: "Création du GIEC (climat)"},
+        {year: 1989, event: "Chute du mur de Berlin"},
+        {year: 1990, event: "Libération de Nelson Mandela"},
+        {year: 1991, event: "Dissolution de l'URSS"},
+        {year: 1992, event: "Traité de Maastricht (UE)"},
+        {year: 1993, event: "Le Web devient public (CERN)"},
+        {year: 1994, event: "Génocide des Tutsis au Rwanda"},
+        {year: 1995, event: "Attentats dans le métro (France)"},
+        {year: 1996, event: "Clonage de la brebis Dolly"},
+        {year: 1997, event: "Mort de la princesse Diana"},
+        {year: 1998, event: "France championne du monde (football)"},
+        {year: 1999, event: "Création de la monnaie Euro"},
+        {year: 2000, event: "Bug de l'an 2000 (évité)"},
+        {year: 2001, event: "Attentats du 11 septembre"},
+        {year: 2002, event: "L'Euro fiduciaire entre en circulation"},
+        {year: 2003, event: "Séquençage du génome humain achevé"},
+        {year: 2004, event: "Création de Facebook"},
+        {year: 2005, event: "YouTube est mis en ligne"},
+        {year: 2006, event: "Lancement de Twitter"},
+        {year: 2007, event: "Lancement du premier iPhone"},
+        {year: 2008, event: "Crise financière mondiale (Subprimes)"},
+        {year: 2009, event: "Investiture de Barack Obama"},
+        {year: 2010, event: "Séisme meurtrier en Haïti"},
+        {year: 2011, event: "Printemps arabe / Fukushima"},
+        {year: 2012, event: "Découverte du Boson de Higgs"},
+        {year: 2013, event: "Mort de Nelson Mandela"},
+        {year: 2014, event: "Annexion de la Crimée"},
+        {year: 2015, event: "Attentats de Paris (Bataclan)"},
+        {year: 2016, event: "Vote du Brexit (Royaume-Uni)"},
+        {year: 2017, event: "Mouvement #MeToo"},
+        {year: 2018, event: "Mouvement des Gilets jaunes"},
+        {year: 2019, event: "Incendie de Notre-Dame de Paris"},
+        {year: 2020, event: "Pandémie mondiale de Covid-19"},
+        {year: 2021, event: "Assaut du Capitole (États-Unis)"},
+        {year: 2022, event: "Invasion de l'Ukraine par la Russie"},
+        {year: 2023, event: "Essor de l'IA (ChatGPT)"},
+        {year: 2024, event: "Jeux Olympiques de Paris"}
+    ];
+
 
     // --- LOGIQUE ASTRO (Compatibilité) ---
     const [selectedCompatibilities, setSelectedCompatibilities] = useState<string[]>([]);
@@ -306,6 +424,47 @@ export default function SeniorForm() {
 
     // --------------------------------------
 
+    // --- LOGIQUE ANNÉE HISTORIQUE (SHUFFLE) ---
+    const shuffledHistory = useMemo(() => {
+        // On mélange aléatoirement la liste historique
+        return [...HISTORIQUE].sort(() => Math.random() - 0.5);
+    }, []);
+
+    // --------------------------------------
+
+    // --- LOGIQUE EMAIL AGRESSIF ---
+    const [emailWarningState, setEmailWarningState] = useState({
+        show: false,
+        message: "",
+        pendingValue: "" // On stocke la lettre en attente
+    });
+
+    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newValue = e.target.value;
+
+        // On choisit une menace au hasard
+        const randomThreat = EMAIL_WARNINGS[Math.floor(Math.random() * EMAIL_WARNINGS.length)];
+
+        // On bloque tout et on affiche l'alerte
+        setEmailWarningState({
+            show: true,
+            message: randomThreat,
+            pendingValue: newValue
+        });
+    };
+
+    const confirmEmailInput = () => {
+        // L'utilisateur cède, on met à jour le champ
+        setFormData(prev => ({...prev, email: emailWarningState.pendingValue}));
+        setEmailWarningState(prev => ({...prev, show: false}));
+    };
+
+    const cancelEmailInput = () => {
+        // L'utilisateur a peur, on annule la frappe (très frustrant)
+        setEmailWarningState(prev => ({...prev, show: false}));
+    };
+
+    // --------------------------------------
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -674,24 +833,31 @@ export default function SeniorForm() {
                                     </select>
                                 </div>
                                 <div>
-                                    <input
-                                        type="number"
+                                    <select
                                         name="dateNaissanceYear"
                                         value={formData.dateNaissanceYear}
                                         onChange={handleChange}
-                                        placeholder="Année"
-                                        disabled={!detectedSign}
                                         className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        min="1900"
-                                        max={new Date().getFullYear()}
                                         required
-                                    />
+                                    >
+                                        <option value="">Année</option>
+                                        {shuffledHistory.map((item) => (
+                                            <option key={item.year} value={item.year}>
+                                                {item.event} {/* L'année est cachée, seul l'événement est visible */}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    {formData.dateNaissanceYear && (
+                                        <div className="text-right text-xs text-gray-400 mt-1">
+                                            Année enregistrée : {formData.dateNaissanceYear}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
+                            <div className="relative">
                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                     Adresse email
                                 </label>
@@ -699,10 +865,47 @@ export default function SeniorForm() {
                                     type="email"
                                     name="email"
                                     value={formData.email}
-                                    onChange={handleChange}
-                                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                                    onChange={handleEmailChange}
+                                    className="w-full px-4 py-2 border border-red-300 dark:border-red-900 rounded-lg bg-red-50 dark:bg-red-900/10 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-red-500"
                                     required
                                 />
+                                <p className="text-[10px] text-red-500 mt-1">
+                                    * Chaque caractère engage votre responsabilité juridique.
+                                </p>
+
+                                {/* MODALE D'AGRESSION */}
+                                {emailWarningState.show && (
+                                    <div
+                                        className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm p-4 animate-in fade-in duration-75">
+                                        <div
+                                            className="bg-red-600 text-white p-6 rounded-none border-4 border-yellow-400 shadow-[0_0_50px_rgba(255,0,0,0.8)] max-w-md w-full text-center">
+                                            <div className="text-4xl mb-4">⚠️ ☢️ ⚠️</div>
+                                            <h3 className="text-xl font-black uppercase tracking-widest mb-4 animate-pulse">
+                                                ALERTE DE SÉCURITÉ CRITIQUE
+                                            </h3>
+                                            <p className="text-lg font-bold mb-8 font-mono border-y-2 border-yellow-400 py-4 bg-red-700">
+                                                {emailWarningState.message}
+                                            </p>
+
+                                            <div className="flex flex-col gap-3">
+                                                <button
+                                                    type="button"
+                                                    onClick={confirmEmailInput}
+                                                    className="w-full py-3 bg-yellow-400 hover:bg-yellow-300 text-red-900 font-black uppercase text-sm tracking-wide shadow-lg hover:scale-105 transition-transform"
+                                                >
+                                                    JE PRENDS LE RISQUE (Je suis fou)
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    onClick={cancelEmailInput}
+                                                    className="w-full py-2 bg-transparent border-2 border-white text-white hover:bg-white/10 font-medium text-xs uppercase opacity-70"
+                                                >
+                                                    ANNULER (J'ai peur)
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
 
                             {/* SECTION TÉLÉPHONE HORRIBLE */}
