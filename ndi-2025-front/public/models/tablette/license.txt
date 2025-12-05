@@ -1,0 +1,11 @@
+Model Information:
+* title:	Tablette
+* source:	https://sketchfab.com/3d-models/tablette-e2df3e2bb5f64a608db2bbe9e37cffdb
+* author:	edouard77 (https://sketchfab.com/edouard77)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Tablette" (https://sketchfab.com/3d-models/tablette-e2df3e2bb5f64a608db2bbe9e37cffdb) by edouard77 (https://sketchfab.com/edouard77) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

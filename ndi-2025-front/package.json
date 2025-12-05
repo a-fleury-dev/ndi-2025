@@ -9,14 +9,21 @@
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
+    "@dimforge/rapier2d-compat": "^0.19.3",
     "@react-router/node": "7.10.1",
     "@react-router/serve": "7.10.1",
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.4.2",
     "isbot": "^5.1.31",
     "lucide-react": "^0.555.0",
+    "rapier": "^1.0.5",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
     "react-router": "7.10.1",
     "tone": "^15.1.22"
+    "react-router-dom": "^7.10.1",
+    "three": "^0.181.2",
+    "three-stdlib": "^2.36.1"
   },
   "devDependencies": {
     "@react-router/dev": "7.10.1",
@@ -24,6 +31,7 @@
     "@types/node": "^22",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
+    "@types/three": "^0.181.0",
     "tailwindcss": "^4.1.13",
     "typescript": "^5.9.2",
     "vite": "^7.1.7",

@@ -1,5 +1,6 @@
 import logoDark from "./logo-dark.svg";
 import logoLight from "./logo-light.svg";
+import { Link } from "react-router";
 
 export function Welcome() {
   return (
@@ -24,6 +25,12 @@ export function Welcome() {
             <p className="leading-6 text-gray-700 dark:text-gray-200 text-center">
               What&apos;s next?
             </p>
+              <Link
+              to="/senior-page"
+              className="block w-full px-4 py-2 text-center bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
+            >
+              Accéder à la page Senior
+            </Link>
             <ul>
               {resources.map(({ href, text, icon }) => (
                 <li key={href}>
