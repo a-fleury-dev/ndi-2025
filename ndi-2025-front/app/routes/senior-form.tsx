@@ -635,60 +635,63 @@ export default function SeniorForm() {
     };
 
     return (
-        <main className="flex items-center justify-center min-h-screen py-8 bg-gray-50 dark:bg-gray-950">
-            <div className="w-full max-w-2xl px-4">
-                <div
-                    className="rounded-3xl border border-gray-200 dark:border-gray-700 p-8 bg-white dark:bg-gray-900 shadow-xl">
-                    <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
+        <main className="flex items-center justify-center min-h-screen py-8 bg-[#F0F4F8] font-sans selection:bg-[#F7D438] selection:text-black overflow-hidden relative">
+
+            {/* DÉCOR D'ARRIÈRE PLAN (Blobs colorés) */}
+            <div className="absolute top-[-0%] left-[-0%] w-[1500px] h-[500px] bg-[#F12FFD] rounded-full mix-blend-multiply filter blur-[80px] opacity-50 animate-blob"></div>
+            <div className="absolute top-[-10%] right-[-10%] w-[1500px] h-[500px] bg-[#F7D438] rounded-full mix-blend-multiply filter blur-[80px] opacity-60 animate-blob animation-delay-2000"></div>
+            <div className="absolute bottom-[-0%] left-[0%] w-[1600px] h-[600px] bg-[#0A83CE] rounded-full mix-blend-multiply filter blur-[80px] opacity-40 animate-blob animation-delay-4000"></div>
+
+            <div className="w-full max-w-2xl px-4 relative z-10">
+                <div className="relative rounded-3xl border-2 border-[#F12FFD] bg-white/90 backdrop-blur-xl shadow-[8px_8px_0px_0px_rgba(241,47,253,0.5)] p-8">
+
+                    <h1 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#0A83CE] via-[#F12FFD] to-[#F7D438] mb-8 tracking-tighter uppercase drop-shadow-sm">
                         Formulaire d&apos;Information
                     </h1>
 
-                    <form onSubmit={handleSubmit} className="space-y-6">
+                    <form onSubmit={handleSubmit} className="space-y-8">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {/* --- REMPLACER LE BLOC PRÉNOM PAR CECI --- */}
-                            <div className="relative">
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Prénom <span className="text-xs text-red-500">(Clavier sécurisé obligatoire)</span>
+                            {/* --- BLOC PRÉNOM (Style Pop) --- */}
+                            <div className="relative group">
+                                <label className="block text-sm font-bold text-[#3A36C3] mb-2 uppercase tracking-wide">
+                                    Prénom <span className="text-xs text-[#F12FFD] normal-case ml-1 font-bold">(Clavier sécurisé obligatoire)</span>
                                 </label>
 
-                                {/* Input en lecture seule qui ouvre le clavier au clic */}
                                 <input
                                     type="text"
                                     name="prenom"
                                     value={formData.prenom}
                                     readOnly
                                     onClick={() => setShowKeyboard(true)}
-                                    className="cursor-pointer w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 select-none"
+                                    className="cursor-pointer w-full px-4 py-3 border-2 border-[#0A83CE] rounded-xl bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#F12FFD] focus:shadow-[4px_4px_0px_0px_#F12FFD] transition-all font-medium"
                                     placeholder="Cliquez pour écrire..."
                                     required
                                 />
 
-                                {/* LE CLAVIER INFERNAL */}
+                                {/* LE CLAVIER INFERNAL (Version Claire) */}
                                 {showKeyboard && (
-                                    <div
-                                        className="absolute z-50 top-full left-0 mt-2 w-full p-4 bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 animate-in fade-in slide-in-from-top-2">
-                                        <div className="flex justify-between items-center mb-2">
-                                            <span
-                                                className="text-xs text-gray-500">Disposition aléatoire sécurisée</span>
+                                    <div className="absolute z-50 top-full left-0 mt-3 w-full p-4 bg-white rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.2)] border-2 border-[#3A36C3] animate-in fade-in slide-in-from-top-4">
+                                        <div className="flex justify-between items-center mb-3 border-b border-gray-100 pb-2">
+                                            <span className="text-xs text-[#0A83CE] font-bold">Disposition aléatoire sécurisée</span>
                                             <button
                                                 type="button"
                                                 onClick={(e) => {
                                                     e.stopPropagation();
                                                     setShowKeyboard(false);
                                                 }}
-                                                className="text-xs text-red-500 hover:text-red-700 font-bold px-2"
+                                                className="text-xs text-[#F12FFD] hover:bg-[#F12FFD] hover:text-white font-bold px-2 py-1 rounded transition-colors"
                                             >
                                                 FERMER
                                             </button>
                                         </div>
 
-                                        <div className="grid grid-cols-6 gap-1">
+                                        <div className="grid grid-cols-6 gap-2">
                                             {keyboardKeys.map((char, index) => (
                                                 <button
-                                                    key={`${char}-${index}`} // Clé unique pour forcer le re-render
+                                                    key={`${char}-${index}`}
                                                     type="button"
                                                     onClick={() => handleVirtualKeyClick(char)}
-                                                    className="h-10 bg-gray-100 hover:bg-blue-100 dark:bg-gray-700 dark:hover:bg-blue-900 text-gray-900 dark:text-white rounded font-bold transition-all active:scale-95 text-sm md:text-base"
+                                                    className="h-10 bg-gray-50 border border-gray-200 hover:bg-[#F7D438] hover:border-[#F7D438] hover:text-black text-gray-700 rounded-lg font-bold transition-all active:scale-95 text-sm md:text-base shadow-sm"
                                                 >
                                                     {char === " " ? "␣" : char}
                                                 </button>
@@ -697,7 +700,7 @@ export default function SeniorForm() {
                                             <button
                                                 type="button"
                                                 onClick={handleVirtualBackspace}
-                                                className="col-span-2 h-10 bg-red-100 hover:bg-red-200 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded font-medium text-xs uppercase"
+                                                className="col-span-2 h-10 bg-[#F12FFD]/10 border border-[#F12FFD] text-[#F12FFD] hover:bg-[#F12FFD] hover:text-white rounded-lg font-bold text-xs uppercase transition-all"
                                             >
                                                 ⌫ Effacer
                                             </button>
@@ -706,53 +709,50 @@ export default function SeniorForm() {
                                 )}
                             </div>
 
+                            {/* --- BLOC NOM (Captcha Pop) --- */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <label className="block text-sm font-bold text-[#3A36C3] mb-2 uppercase tracking-wide">
                                     Nom de famille
                                 </label>
 
                                 {captchaSolved ? (
-                                    /* LE VRAI CHAMP (Une fois débloqué) */
                                     <div className="animate-in zoom-in duration-300">
                                         <input
                                             type="text"
                                             name="nom"
                                             value={formData.nom}
                                             onChange={handleChange}
-                                            className="w-full px-4 py-2 border-2 border-green-500 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                                            className="w-full px-4 py-3 border-2 border-[#0A83CE] rounded-xl bg-white text-gray-900 focus:outline-none focus:shadow-[4px_4px_0px_0px_#0A83CE]"
                                             placeholder="Enfin..."
                                             required
                                         />
-                                        <p className="text-xs text-green-600 mt-1">Identité vérifiée.</p>
+                                        <p className="text-xs text-[#0A83CE] mt-1 font-bold">✓ Identité vérifiée.</p>
                                     </div>
                                 ) : (
-                                    /* LE CAPTCHA INFERNAL */
-                                    <div
-                                        className="p-4 bg-red-50 dark:bg-red-900/10 border-2 border-red-200 dark:border-red-800 rounded-xl relative overflow-hidden">
-                                        <div
-                                            className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-bl">
+                                    <div className="p-4 bg-[#F7D438]/20 border-2 border-[#F7D438] rounded-xl relative overflow-hidden">
+                                        <div className="absolute top-0 right-0 bg-[#F7D438] text-black text-xs font-black px-2 py-1 rounded-bl">
                                             SÉCURITÉ {captchaStep}/3
                                         </div>
 
                                         {/* ÉTAPE 1 : MATHS */}
                                         {captchaStep === 1 && (
                                             <div className="space-y-3">
-                                                <p className="text-sm font-bold text-red-800 dark:text-red-200">
+                                                <p className="text-sm font-bold text-[#3A36C3]">
                                                     Prouvez votre intelligence :
-                                                    <br/>
-                                                    <span className="text-lg font-mono">15 + 10 × 2 = ?</span>
+                                                    <br />
+                                                    <span className="text-lg font-mono text-black">15 + 10 × 2 = ?</span>
                                                 </p>
                                                 <div className="flex gap-2">
                                                     <input
                                                         type="number"
-                                                        className="w-20 px-2 py-1 border rounded text-black"
+                                                        className="w-20 px-2 py-1 bg-white border-2 border-[#F7D438] rounded text-black focus:outline-none"
                                                         value={mathAnswer}
                                                         onChange={(e) => setMathAnswer(e.target.value)}
                                                     />
                                                     <button
                                                         type="button"
                                                         onClick={verifyStep1}
-                                                        className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-sm"
+                                                        className="px-3 py-1 bg-[#F7D438] text-black font-bold rounded hover:bg-[#F12FFD] hover:text-white transition-colors text-sm shadow-sm"
                                                     >
                                                         Vérifier
                                                     </button>
@@ -760,13 +760,13 @@ export default function SeniorForm() {
                                             </div>
                                         )}
 
-                                        {/* ÉTAPE 2 : SLIDER DE PRÉCISION */}
+                                        {/* ÉTAPE 2 : SLIDER */}
                                         {captchaStep === 2 && (
                                             <div className="space-y-3">
-                                                <p className="text-sm font-bold text-red-800 dark:text-red-200">
+                                                <p className="text-sm font-bold text-[#3A36C3]">
                                                     Calibrage biométrique :
-                                                    <br/>
-                                                    <span className="text-xs font-normal">Glissez le curseur EXACTEMENT sur 777.</span>
+                                                    <br />
+                                                    <span className="text-xs font-normal text-gray-600">Glissez le curseur EXACTEMENT sur 777.</span>
                                                 </p>
                                                 <div className="flex flex-col items-center gap-2">
                                                     <input
@@ -775,14 +775,13 @@ export default function SeniorForm() {
                                                         max="1000"
                                                         value={sliderValue}
                                                         onChange={(e) => setSliderValue(parseInt(e.target.value))}
-                                                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-red-600"
+                                                        className="w-full h-2 bg-white rounded-lg appearance-none cursor-pointer border border-gray-300 accent-[#F12FFD]"
                                                     />
-                                                    <div
-                                                        className="font-mono text-xl font-bold text-red-600">{sliderValue}</div>
+                                                    <div className="font-mono text-xl font-bold text-[#F12FFD]">{sliderValue}</div>
                                                     <button
                                                         type="button"
                                                         onClick={verifyStep2}
-                                                        className="w-full px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-sm"
+                                                        className="w-full px-3 py-1 bg-[#F7D438] text-black font-bold rounded hover:bg-[#F12FFD] hover:text-white text-sm transition-colors"
                                                     >
                                                         Confirmer 777
                                                     </button>
@@ -790,17 +789,17 @@ export default function SeniorForm() {
                                             </div>
                                         )}
 
-                                        {/* ÉTAPE 3 : INVERSION DE TEXTE */}
+                                        {/* ÉTAPE 3 : INVERSION */}
                                         {captchaStep === 3 && (
                                             <div className="space-y-3">
-                                                <p className="text-sm font-bold text-red-800 dark:text-red-200">
+                                                <p className="text-sm font-bold text-[#3A36C3]">
                                                     Test de conformité miroir :
-                                                    <br/>
-                                                    <span className="text-xs font-normal">Écrivez "Je suis humain" à l'envers.</span>
+                                                    <br />
+                                                    <span className="text-xs font-normal text-gray-600">Écrivez "Je suis humain" à l'envers.</span>
                                                 </p>
                                                 <input
                                                     type="text"
-                                                    className="w-full px-2 py-1 border rounded text-black text-sm"
+                                                    className="w-full px-2 py-1 bg-white border-2 border-[#F7D438] rounded text-black text-sm focus:outline-none"
                                                     placeholder="ex: niamuh..."
                                                     value={reverseText}
                                                     onChange={(e) => setReverseText(e.target.value)}
@@ -808,16 +807,15 @@ export default function SeniorForm() {
                                                 <button
                                                     type="button"
                                                     onClick={verifyStep3}
-                                                    className="w-full px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-sm"
+                                                    className="w-full px-3 py-1 bg-[#F7D438] text-black font-bold rounded hover:bg-[#F12FFD] hover:text-white text-sm transition-colors"
                                                 >
                                                     Déverrouiller le champ Nom
                                                 </button>
                                             </div>
                                         )}
 
-                                        {/* MESSAGE D'ERREUR GÉNÉRAL */}
                                         {captchaError && (
-                                            <p className="text-xs text-red-600 font-bold mt-2 animate-pulse">
+                                            <p className="text-xs text-[#F12FFD] font-bold mt-2 animate-pulse">
                                                 ⚠️ {captchaError}
                                             </p>
                                         )}
@@ -827,22 +825,20 @@ export default function SeniorForm() {
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {/* SECTION AGE D6 */}
+                            {/* --- AGE D6 --- */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <label className="block text-sm font-bold text-[#3A36C3] mb-2 uppercase tracking-wide">
                                     Âge
                                 </label>
-                                <div
-                                    className="p-4 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-800/50">
+                                <div className="p-4 border-2 border-[#F12FFD]/50 rounded-xl bg-[#F12FFD]/5 relative">
                                     <div className="flex items-center justify-between mb-3">
-                        <span className="text-3xl font-bold text-gray-900 dark:text-white">
-                            {formData.age} ans
-                        </span>
+                                <span className="text-4xl font-black text-[#3A36C3]">
+                                    {formData.age} <span className="text-lg text-gray-500 font-medium">ans</span>
+                                </span>
                                         {lastRoll && (
-                                            <span
-                                                className="text-sm font-medium text-blue-600 dark:text-blue-400 animate-bounce">
-                                + {lastRoll} 🎲
-                            </span>
+                                            <span className="text-sm font-bold text-[#F7D438] bg-black px-2 py-1 rounded animate-bounce">
+                                        + {lastRoll} 🎲
+                                    </span>
                                         )}
                                     </div>
 
@@ -850,56 +846,48 @@ export default function SeniorForm() {
                                         <button
                                             type="button"
                                             onClick={handleRollDice}
-                                            className="flex-1 px-3 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded transition-colors flex items-center justify-center gap-2 active:scale-95"
+                                            className="flex-1 px-3 py-3 bg-[#F12FFD] hover:bg-[#D902E6] text-white text-sm font-bold rounded-lg transition-all flex items-center justify-center gap-2 active:scale-95 shadow-[4px_4px_0px_0px_rgba(241,47,253,0.3)]"
                                         >
                                             <span>Lancer le dé</span>
                                         </button>
                                         <button
                                             type="button"
                                             onClick={handleResetAge}
-                                            className="px-3 py-2 bg-red-100 hover:bg-red-200 text-red-700 dark:bg-red-900/30 dark:text-red-300 rounded transition-colors text-sm"
+                                            className="px-3 py-3 bg-white border-2 border-[#F12FFD] text-[#F12FFD] hover:bg-[#F12FFD] hover:text-white rounded-lg transition-colors text-sm font-bold"
                                             title="Recommencer à 0 (Si vous avez dépassé votre âge)"
                                         >
                                             Reset
                                         </button>
                                     </div>
-                                    {/* Input caché pour garder la valeur dans le formData */}
-                                    <input
-                                        type="hidden"
-                                        name="age"
-                                        value={formData.age}
-                                        required
-                                    />
+                                    <input type="hidden" name="age" value={formData.age} required />
                                 </div>
                             </div>
 
+                            {/* --- IDENTITÉ BIOLOGIQUE --- */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <label className="block text-sm font-bold text-[#3A36C3] mb-2 uppercase tracking-wide">
                                     Identité Biologique
                                 </label>
 
-                                <div
-                                    className="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg border border-gray-300 dark:border-gray-600">
-                                    {/* Affichage de la valeur actuelle */}
-                                    <div className="mb-4 text-center">
-                    <span className={`text-2xl font-bold transition-all duration-75 "text-gray-500"`}>
-                      {formData.sexe || "?"}
-                    </span>
+                                <div className="p-4 bg-gray-50 rounded-xl border-2 border-gray-200">
+                                    <div className="mb-4 text-center h-8">
+                                <span className="text-xl font-black text-[#0A83CE] transition-all duration-75">
+                                    {formData.sexe || "?"}
+                                </span>
                                     </div>
 
-                                    {/* Le Slider Insupportable */}
                                     <input
                                         type="range"
                                         min="0"
                                         max={GENRE_SPECTRUM.length - 1}
                                         value={sliderGenreIndex}
                                         onChange={handleGenderSlide}
-                                        className="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 accent-blue-600 hover:accent-blue-700"
+                                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#0A83CE]"
                                         step="1"
                                         title="Bonne chance"
                                     />
 
-                                    <div className="flex justify-between text-[10px] text-gray-400 mt-1 px-1">
+                                    <div className="flex justify-between text-[10px] text-gray-400 mt-2 px-1 font-bold uppercase">
                                         <span>Néant</span>
                                         <span>???</span>
                                         <span>Introuvable</span>
@@ -907,73 +895,67 @@ export default function SeniorForm() {
                                 </div>
                             </div>
                         </div>
-                        {/* --- REMPLACER L'ANCIEN BLOC DATE DE NAISSANCE PAR CECI --- */}
-                        <div
-                            className="p-5 border border-purple-200 dark:border-purple-900 rounded-xl bg-purple-50 dark:bg-purple-900/10">
-                            <label className="block text-sm font-medium text-purple-900 dark:text-purple-200 mb-4">
+
+                        {/* --- ASTROLOGIE --- */}
+                        <div className="p-6 border-2 border-[#3A36C3] rounded-2xl bg-[#3A36C3]/5 relative overflow-hidden">
+                            <div className="absolute top-[-20%] right-[-10%] w-32 h-32 bg-[#F7D438] rounded-full blur-2xl opacity-40"></div>
+
+                            <label className="block text-sm font-bold text-[#3A36C3] mb-4 relative z-10">
                                 Identification Astrologique de votre date de naissance
-                                <br/>
-                                <span className="text-xs font-normal opacity-80">
-                  Identifiez votre signe astro en cochant tous les signes compatibles avec celui-ci.
-                </span>
-                                <p>
+                                <br />
+                                <span className="text-xs font-normal text-gray-500">
+                            Identifiez votre signe astro en cochant tous les signes compatibles avec celui-ci.
+                        </span>
+                                <p className="mt-2">
                                     <a
                                         href="https://cdn0.mariages.net/article/2847/original/960/jpg/57482-zodiac-compatibility-chart-1x1-fr.webp"
                                         target="_blank"
                                         rel="noopener noreferrer"
+                                        className="text-[#F12FFD] font-bold underline text-xs hover:text-[#0A83CE] transition-colors"
                                     >
-                                        [Cliquez] Image d'aide Astrologique
+                                        [Cliquez] Image d&apos;aide Astrologique
                                     </a>
-
                                 </p>
                             </label>
 
-                            {/* Grille de cases à cocher */}
-                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mb-6">
+                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mb-6 relative z-10">
                                 {SIGNES.map(signe => (
-                                    <label key={signe}
-                                           className="flex items-center space-x-2 cursor-pointer p-2 bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700 hover:border-purple-400 transition-all select-none">
+                                    <label key={signe} className="flex items-center space-x-2 cursor-pointer p-2 bg-white rounded-lg border border-gray-200 hover:border-[#F12FFD] hover:shadow-md transition-all select-none group">
                                         <input
                                             type="checkbox"
                                             checked={selectedCompatibilities.includes(signe)}
                                             onChange={() => toggleCompatibility(signe)}
-                                            className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500"
+                                            className="w-4 h-4 text-[#3A36C3] rounded border-gray-300 focus:ring-[#F7D438]"
                                         />
-                                        <span
-                                            className="text-xs sm:text-sm text-gray-700 dark:text-gray-300">{signe}</span>
+                                        <span className="text-xs sm:text-sm text-gray-600 group-hover:text-[#F12FFD] font-medium">{signe}</span>
                                     </label>
                                 ))}
                             </div>
 
-                            {/* Feedback utilisateur */}
                             {detectedSign ? (
-                                <div
-                                    className="mb-4 text-center p-2 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-lg text-sm font-medium animate-pulse">
-                                    Signe identifié : {detectedSign} ✨
+                                <div className="mb-6 text-center p-3 bg-[#F7D438] text-black rounded-lg text-sm font-bold animate-pulse shadow-sm border-2 border-black/10">
+                                    ✨ Signe identifié : {detectedSign} ✨
                                 </div>
                             ) : (
-                                <div
-                                    className="mb-4 text-center p-2 bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 rounded-lg text-xs italic">
-                                    En attente d'une combinaison de compatibilité parfaite...
+                                <div className="mb-6 text-center p-2 bg-white/50 text-gray-500 rounded-lg text-xs italic border border-dashed border-gray-300">
+                                    En attente d&apos;une combinaison de compatibilité parfaite...
                                 </div>
                             )}
 
-                            {/* Les champs Date qui ne s'affichent/activent que si le signe est trouvé */}
-                            <div
-                                className={`grid grid-cols-3 gap-4 transition-opacity duration-300 ${detectedSign ? 'opacity-100' : 'opacity-50 pointer-events-none'}`}>
-                                <div>
+                            <div className={`grid grid-cols-3 gap-4 transition-all duration-500 ${detectedSign ? 'opacity-100' : 'opacity-30 pointer-events-none'}`}>
+                                <div className="relative">
                                     <select
                                         name="dateNaissanceMonth"
                                         value={formData.dateNaissanceMonth}
                                         onChange={handleChange}
                                         disabled={!detectedSign}
-                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-4 py-2 border-2 border-[#3A36C3] rounded-lg bg-white text-gray-900 focus:outline-none focus:border-[#F12FFD] appearance-none font-medium"
                                         required
                                     >
                                         <option value="">Mois</option>
                                         {availableMonths.map(m => (
                                             <option key={m} value={String(m).padStart(2, "0")}>
-                                                {new Date(0, m - 1).toLocaleString('fr-FR', {month: 'long'})}
+                                                {new Date(0, m - 1).toLocaleString('fr-FR', { month: 'long' })}
                                             </option>
                                         ))}
                                     </select>
@@ -984,7 +966,7 @@ export default function SeniorForm() {
                                         value={formData.dateNaissanceDay}
                                         onChange={handleChange}
                                         disabled={!detectedSign || !formData.dateNaissanceMonth}
-                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-4 py-2 border-2 border-[#3A36C3] rounded-lg bg-white text-gray-900 focus:outline-none focus:border-[#F12FFD] appearance-none font-medium"
                                         required
                                     >
                                         <option value="">Jour</option>
@@ -1000,18 +982,18 @@ export default function SeniorForm() {
                                         name="dateNaissanceYear"
                                         value={formData.dateNaissanceYear}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-4 py-2 border-2 border-[#3A36C3] rounded-lg bg-white text-gray-900 focus:outline-none focus:border-[#F12FFD] appearance-none text-xs overflow-hidden font-medium"
                                         required
                                     >
                                         <option value="">Année</option>
                                         {shuffledHistory.map((item) => (
                                             <option key={item.year} value={item.year}>
-                                                {item.event} {/* L'année est cachée, seul l'événement est visible */}
+                                                {item.event}
                                             </option>
                                         ))}
                                     </select>
                                     {formData.dateNaissanceYear && (
-                                        <div className="text-right text-xs text-gray-400 mt-1">
+                                        <div className="text-right text-xs text-[#F12FFD] mt-1 font-bold">
                                             Année enregistrée : {formData.dateNaissanceYear}
                                         </div>
                                     )}
@@ -1020,8 +1002,9 @@ export default function SeniorForm() {
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            {/* --- EMAIL --- */}
                             <div className="relative">
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <label className="block text-sm font-bold text-[#3A36C3] mb-2 uppercase tracking-wide">
                                     Adresse email
                                 </label>
                                 <input
@@ -1029,24 +1012,23 @@ export default function SeniorForm() {
                                     name="email"
                                     value={formData.email}
                                     onChange={handleEmailChange}
-                                    className="w-full px-4 py-2 border border-red-300 dark:border-red-900 rounded-lg bg-red-50 dark:bg-red-900/10 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-red-500"
+                                    className="w-full px-4 py-3 border-2 border-[#F12FFD] rounded-xl bg-white text-gray-900 focus:outline-none focus:shadow-[4px_4px_0px_0px_#F12FFD] placeholder-gray-400"
+                                    placeholder="exemple@danger.net"
                                     required
                                 />
-                                <p className="text-[10px] text-red-500 mt-1">
+                                <p className="text-[10px] text-[#F12FFD] mt-1 font-bold">
                                     * Chaque caractère engage votre responsabilité juridique.
                                 </p>
 
-                                {/* MODALE D'AGRESSION */}
+                                {/* MODALE EMAIL */}
                                 {emailWarningState.show && (
-                                    <div
-                                        className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm p-4 animate-in fade-in duration-75">
-                                        <div
-                                            className="bg-red-600 text-white p-6 rounded-none border-4 border-yellow-400 shadow-[0_0_50px_rgba(255,0,0,0.8)] max-w-md w-full text-center">
+                                    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[#3A36C3]/80 backdrop-blur-md p-4 animate-in fade-in duration-100">
+                                        <div className="bg-white border-4 border-[#F7D438] shadow-2xl p-8 max-w-md w-full text-center relative overflow-hidden rounded-3xl">
                                             <div className="text-4xl mb-4">⚠️ ☢️ ⚠️</div>
-                                            <h3 className="text-xl font-black uppercase tracking-widest mb-4 animate-pulse">
+                                            <h3 className="text-xl font-black text-[#F7D438] uppercase tracking-widest mb-4">
                                                 ALERTE DE SÉCURITÉ CRITIQUE
                                             </h3>
-                                            <p className="text-lg font-bold mb-8 font-mono border-y-2 border-yellow-400 py-4 bg-red-700">
+                                            <p className="text-gray-900 mb-8 font-bold font-mono py-4 bg-[#F7D438]/20 rounded-lg">
                                                 {emailWarningState.message}
                                             </p>
 
@@ -1054,16 +1036,16 @@ export default function SeniorForm() {
                                                 <button
                                                     type="button"
                                                     onClick={confirmEmailInput}
-                                                    className="w-full py-3 bg-yellow-400 hover:bg-yellow-300 text-red-900 font-black uppercase text-sm tracking-wide shadow-lg hover:scale-105 transition-transform"
+                                                    className="w-full py-3 bg-[#F7D438] hover:bg-[#F12FFD] hover:text-white text-black font-black uppercase text-sm tracking-wide transition-all shadow-[4px_4px_0px_0px_black] active:translate-y-1 active:shadow-none"
                                                 >
                                                     JE PRENDS LE RISQUE (Je suis fou)
                                                 </button>
                                                 <button
                                                     type="button"
                                                     onClick={cancelEmailInput}
-                                                    className="w-full py-2 bg-transparent border-2 border-white text-white hover:bg-white/10 font-medium text-xs uppercase opacity-70"
+                                                    className="w-full py-2 bg-transparent border-2 border-gray-200 text-gray-500 hover:text-black font-medium text-xs uppercase"
                                                 >
-                                                    ANNULER (J'ai peur)
+                                                    ANNULER (J&apos;ai peur)
                                                 </button>
                                             </div>
                                         </div>
@@ -1071,18 +1053,18 @@ export default function SeniorForm() {
                                 )}
                             </div>
 
-                            {/* SECTION TÉLÉPHONE HORRIBLE */}
+                            {/* --- TELEPHONE --- */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <label className="block text-sm font-bold text-[#3A36C3] mb-2 uppercase tracking-wide">
                                     Numéro de téléphone
                                 </label>
-                                <div className="flex gap-1 md:gap-2">
+                                <div className="flex gap-1">
                                     {phoneOptions.map((options, index) => (
                                         <div key={index} className="flex-1 min-w-0">
                                             <select
                                                 value={getPhonePartValue(index)}
                                                 onChange={(e) => handlePhoneChange(index, e.target.value)}
-                                                className="w-full px-1 md:px-2 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none text-center"
+                                                className="w-full px-0 py-3 text-sm border-2 border-[#0A83CE] bg-white text-gray-900 focus:outline-none focus:bg-[#0A83CE] focus:text-white appearance-none text-center rounded-lg font-bold"
                                                 required
                                                 title={`Chiffres ${index * 2 + 1} et ${index * 2 + 2}`}
                                             >
@@ -1096,18 +1078,13 @@ export default function SeniorForm() {
                                         </div>
                                     ))}
                                 </div>
-                                {/* Champ caché pour validation */}
-                                <input
-                                    type="hidden"
-                                    name="telephone"
-                                    value={formData.telephone}
-                                    required
-                                />
+                                <input type="hidden" name="telephone" value={formData.telephone} required />
                             </div>
                         </div>
 
+                        {/* --- VILLE --- */}
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            <label className="block text-sm font-bold text-[#3A36C3] mb-2 uppercase tracking-wide">
                                 Ville de naissance
                             </label>
 
@@ -1119,10 +1096,10 @@ export default function SeniorForm() {
                                     readOnly={!cityFlow.isDone}
                                     onChange={handleChange}
                                     placeholder={cityFlow.isDone ? "Corrigez l'IA si vous l'osez..." : "En attente d'analyse..."}
-                                    className={`flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg transition-colors ${
+                                    className={`flex-1 px-4 py-3 border-2 rounded-xl transition-colors font-medium ${
                                         cityFlow.isDone
-                                            ? "bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                            : "bg-gray-200 dark:bg-gray-700 text-gray-500 cursor-not-allowed"
+                                            ? "bg-white border-[#F12FFD] text-gray-900 focus:ring-2 focus:ring-[#F12FFD]"
+                                            : "bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed"
                                     }`}
                                     required
                                 />
@@ -1130,49 +1107,42 @@ export default function SeniorForm() {
                                     type="button"
                                     onClick={openCityFlow}
                                     disabled={formData.villeDNaissance === "New York"}
-                                    className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm font-bold shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="px-6 py-2 bg-[#3A36C3] hover:bg-[#F12FFD] text-white rounded-xl text-sm font-bold shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                                 >
-                                    {formData.villeDNaissance === "New York" ? "Analyse Terminée" : "Lancer l'IA de Localisation"}
+                                    {formData.villeDNaissance === "New York" ? "Analyse Terminée" : "Lancer l'IA"}
                                 </button>
                             </div>
                             <p className="text-[10px] text-gray-400 mt-1">
                                 * Nous utilisons vos données domestiques pour déduire votre origine.
                             </p>
 
-                            {/* MODALE DE L'ENFER DES QUESTIONS */}
+                            {/* MODALE VILLE (Light Mode) */}
                             {cityFlow.isOpen && (
-                                <div
-                                    className="fixed inset-0 z-[150] flex items-center justify-center bg-purple-900/90 backdrop-blur-md p-4 animate-in zoom-in duration-200">
-                                    <div
-                                        className="bg-white dark:bg-gray-900 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden border border-purple-500">
-
+                                <div className="fixed inset-0 z-[150] flex items-center justify-center bg-[#3A36C3]/50 backdrop-blur-lg p-4 animate-in zoom-in duration-200">
+                                    <div className="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden border-2 border-[#3A36C3]">
                                         {/* En-tête */}
-                                        <div className="bg-purple-600 p-4 text-white">
+                                        <div className="bg-[#3A36C3] p-4 text-white">
                                             <h3 className="text-lg font-bold flex items-center gap-2">
                                                 🧠 Algorithme de Déduction Spatiale
                                             </h3>
                                             {!cityFlow.isLoading && (
-                                                <div className="text-xs opacity-80 mt-1">
+                                                <div className="text-xs bg-white/20 px-2 py-1 rounded mt-1 inline-block">
                                                     Question {cityFlow.step + 1} / {CITY_QUESTIONS.length}
                                                 </div>
                                             )}
                                         </div>
 
-                                        <div className="p-6">
+                                        <div className="p-8">
                                             {cityFlow.isLoading ? (
-                                                /* AFFICHAGE DU FAUX CHARGEMENT */
-                                                <div
-                                                    className="flex flex-col items-center justify-center py-8 space-y-4">
-                                                    <div
-                                                        className="w-16 h-16 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin"></div>
-                                                    <p className="text-purple-600 dark:text-purple-400 font-mono text-center animate-pulse">
+                                                <div className="flex flex-col items-center justify-center py-8 space-y-4">
+                                                    <div className="w-16 h-16 border-4 border-[#F12FFD]/30 border-t-[#F12FFD] rounded-full animate-spin"></div>
+                                                    <p className="text-[#3A36C3] font-bold text-center animate-pulse">
                                                         {cityFlow.loadingText || "Initialisation..."}
                                                     </p>
                                                 </div>
                                             ) : (
-                                                /* AFFICHAGE DES QUESTIONS (SECURISE) */
                                                 <div className="flex flex-col">
-                                                    <p className="text-lg font-medium text-gray-900 dark:text-white mb-6">
+                                                    <p className="text-xl font-bold text-gray-900 mb-6 text-center">
                                                         {CITY_QUESTIONS[cityFlow.step]}
                                                     </p>
 
@@ -1183,18 +1153,18 @@ export default function SeniorForm() {
                                                         onChange={handleCityInputChange}
                                                         onKeyDown={(e) => {
                                                             if (e.key === 'Enter') {
-                                                                e.preventDefault(); // Empêche le submit global
+                                                                e.preventDefault();
                                                                 handleCityAnswerSubmit();
                                                             }
                                                         }}
-                                                        className="w-full px-4 py-3 border-2 border-purple-100 dark:border-purple-900 rounded-lg focus:border-purple-500 outline-none bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white mb-6"
+                                                        className="w-full px-4 py-4 border-b-2 border-[#3A36C3] text-center text-lg rounded-none focus:border-[#F12FFD] outline-none bg-transparent text-gray-900 mb-8 placeholder-gray-300"
                                                         placeholder="Soyez précis..."
                                                     />
 
                                                     <button
                                                         type="button"
                                                         onClick={handleCityAnswerSubmit}
-                                                        className="w-full py-3 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-lg transition-transform active:scale-95"
+                                                        className="w-full py-4 bg-[#F7D438] hover:bg-[#F12FFD] hover:text-white text-black font-black text-lg uppercase tracking-wider rounded-xl transition-all shadow-[4px_4px_0px_0px_black] active:translate-y-1 active:shadow-none"
                                                     >
                                                         {cityFlow.step === CITY_QUESTIONS.length - 1 ? "CALCULER MA VILLE" : "Question Suivante →"}
                                                     </button>
@@ -1206,53 +1176,51 @@ export default function SeniorForm() {
                             )}
                         </div>
 
-                        {/* Popup de confirmation */}
+                        {/* MODALE SUCCESS */}
                         {showSubmitPopup && (
-                            <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/70 p-4">
-                                <div
-                                    className="bg-white dark:bg-gray-900 p-6 rounded-xl max-w-md w-full text-center border border-gray-200 dark:border-gray-700">
-                                    <h3 className="text-xl font-bold mb-3">Confirmation</h3>
-                                    <p className="text-sm text-gray-700 dark:text-gray-300 mb-6">
-                                        Bravo, vous avez réussi à soumettre le formulaire !
-                                        <br/>
-                                        Vous avez pu vous mettre à la place d'un sénior face aux défis du numérique.
-                                        <br/>
-                                        Votre participation contribue à rendre le numérique plus inclusif pour les
-                                        séniors et pour les personnes les moins habituées à nos outils numériques.
-                                    </p>
-                                    <div className="flex gap-2 justify-center">
-                                        <Link
-                                            to={`/`}
-                                        >
-                                            <button
-                                                type="button"
-                                                onClick={() => setShowSubmitPopup(false)}
-                                                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                                            >
-                                                Fermer
-                                            </button>
-                                        </Link>
+                            <div className="fixed inset-0 z-[200] flex items-center justify-center bg-white/80 backdrop-blur-md p-4">
+                                <div className="bg-white p-1 rounded-2xl max-w-md w-full shadow-[0_20px_50px_rgba(0,0,0,0.3)] border-2 border-[#F12FFD]">
+                                    <div className="bg-white rounded-xl p-8 text-center">
+                                        <h3 className="text-2xl font-black text-[#3A36C3] mb-4 uppercase">Confirmation</h3>
+                                        <p className="text-sm text-gray-600 mb-8 leading-relaxed font-medium">
+                                            Bravo, vous avez réussi à soumettre le formulaire !
+                                            <br />
+                                            Vous avez pu vous mettre à la place d&apos;un sénior face aux défis du numérique.
+                                            <br />
+                                            Votre participation contribue à rendre le numérique plus inclusif pour les
+                                            séniors et pour les personnes les moins habituées à nos outils numériques.
+                                        </p>
+                                        <div className="flex gap-2 justify-center">
+                                            <Link to={`/`}>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setShowSubmitPopup(false)}
+                                                    className="px-6 py-3 bg-[#0A83CE] text-white font-bold rounded-full hover:bg-[#3A36C3] transition-colors shadow-lg"
+                                                >
+                                                    Fermer
+                                                </button>
+                                            </Link>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         )}
 
-                        <div className="flex gap-4 pt-6">
-                            <div className="flex-1">
-                                <button
-                                    type="button"
-                                    onClick={handleSubmitClick}
-                                    disabled={!isFormComplete() || submitted}
-                                    className="w-full px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors shadow-lg hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed"
-                                >
-                                    {submitted ? "Envoyé ✓" : `Soumettre (${submitCount}/${SUBMIT_THRESHOLD})`}
-                                </button>
-                                {submitError && (
-                                    <div className="mt-2 text-xs text-red-600 font-medium">
-                                        {submitError}
-                                    </div>
-                                )}
-                            </div>
+                        <div className="pt-8 border-t border-gray-200">
+                            <button
+                                type="button"
+                                onClick={handleSubmitClick}
+                                disabled={!isFormComplete() || submitted}
+                                className="w-full px-6 py-5 bg-gradient-to-r from-[#F7D438] to-[#F12FFD] hover:to-[#0A83CE] text-white text-xl font-black uppercase tracking-widest rounded-2xl transition-all shadow-[0_10px_20px_rgba(241,47,253,0.3)] hover:shadow-[0_15px_30px_rgba(241,47,253,0.5)] disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none transform hover:-translate-y-1"
+                                style={{ textShadow: '2px 2px 0px rgba(0,0,0,0.1)' }}
+                            >
+                                {submitted ? "Envoyé ✓" : `Soumettre (${submitCount}/${SUBMIT_THRESHOLD})`}
+                            </button>
+                            {submitError && (
+                                <div className="mt-4 text-center p-3 bg-[#F12FFD]/10 text-[#F12FFD] rounded-lg border-2 border-[#F12FFD] text-sm font-bold animate-shake">
+                                    {submitError}
+                                </div>
+                            )}
                         </div>
                     </form>
                 </div>
