@@ -89,7 +89,13 @@ export default function Page3D() {
             </button>
 
             {/* Boutons Home et Pause (au-dessus du canvas) */}
-            <div className="absolute top-4 right-4 flex gap-2 z-20">
+            <div className="absolute top-4 right-4 flex gap-2 z-50">
+                <button
+                    onClick={() => navigate("/reconditioning/credits")}
+                    className="px-6 py-3 rounded-xl backdrop-blur-sm border border-white/30 hover:border-white/60 hover:scale-110 transition-all duration-300 text-white cursor-pointer hover:bg-[#F7DA38]/20"
+                >
+                    📜 Crédits
+                </button>
                 <button
                     onClick={handleHome}
                     className="px-6 py-3 rounded-xl backdrop-blur-sm border border-white/30 hover:border-white/60 hover:scale-110 transition-all duration-300 text-white cursor-pointer hover:bg-[#9F33E6]/20"
@@ -116,9 +122,9 @@ export default function Page3D() {
             </div>
 
             {/* Texte et contenu à droite (au-dessus du canvas) */}
-            <div className="flex-1 p-8 text-white relative z-20 transform -translate-x-6">
-                <h1 className="text-3xl font-bold mb-4 drop-shadow-lg">{slides[currentIndex].title}</h1>
-                <p className="whitespace-pre-line drop-shadow-md text-lg leading-relaxed">{slides[currentIndex].description}</p>
+            <div className="flex-1 p-8 text-white relative z-20 transform -translate-x-6 max-w-[640px]">
+                <h1 className="text-[clamp(1.25rem,4vw,2.25rem)] font-bold mb-4 drop-shadow-lg">{slides[currentIndex].title}</h1>
+                <p className="whitespace-pre-line drop-shadow-md text-[clamp(0.9rem,2.2vw,1.125rem)] leading-relaxed">{slides[currentIndex].description}</p>
             </div>
         </div>
     );

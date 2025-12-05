@@ -8,5 +8,6 @@ export default [
     route("women", "routes/women.tsx"),
     route("chatbot", "routes/chatbot.tsx"),
     route("reconditioning", "routes/reconditioning.tsx"),
+    route("reconditioning/credits", "pages/Credits.tsx"),
     route("nird", "routes/nird.tsx"),
 ] satisfies RouteConfig;
