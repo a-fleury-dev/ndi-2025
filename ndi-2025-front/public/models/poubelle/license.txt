@@ -1,0 +1,11 @@
+Model Information:
+* title:	Binley - the recycling mascot
+* source:	https://sketchfab.com/3d-models/binley-the-recycling-mascot-31b3e1f32b0c48639af8db1968cb82eb
+* author:	Cozmoth (https://sketchfab.com/Cozmoth)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Binley - the recycling mascot" (https://sketchfab.com/3d-models/binley-the-recycling-mascot-31b3e1f32b0c48639af8db1968cb82eb) by Cozmoth (https://sketchfab.com/Cozmoth) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
