@@ -98,7 +98,7 @@ export default function Page3D() {
                 </button>
                 <button
                     onClick={() => setIsRotating(!isRotating)}
-                    className="px-6 py-3 rounded-xl backdrop-blur-sm border border-white/30 hover:border-white/60 hover:scale-110 transition-all duration-300 text-white cursor-pointer hover:bg-[#F12FFD]/20"
+                    className="px-6 py-3 rounded-xl backdrop-blur-sm border border-white/30 hover:border-white/60 hover:scale-110 transition-all duration-300 text-white cursor-pointer hover:bg-[#F12FFD]/20 z-50"
                 >
                     {isRotating ? "⏸ Pause" : "▶ Play"}
                 </button>
