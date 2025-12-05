@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+// @ts-ignore
 import type { GroupProps } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
