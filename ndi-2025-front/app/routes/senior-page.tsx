@@ -54,7 +54,7 @@ export default function SeniorPage() {
                 {/* CTA */}
                 <div className="flex justify-center">
                     <Link
-                        to="/senior-form"
+                        to="/elderly_form"
                         className="inline-flex items-center px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl shadow transition-colors"
                     >
                         Remplissez-ce formulaire pour envoyer un peu d'amour ❤
