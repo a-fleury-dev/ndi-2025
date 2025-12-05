@@ -1,6 +1,5 @@
 import type {Route} from "./+types/senior-form";
 import {useState, useMemo, useEffect} from "react";
-import {Link} from "react-router";
 
 export function meta({}: Route.MetaArgs) {
     return [
@@ -23,6 +22,26 @@ export default function SeniorForm() {
         domicile: "",
         villeDNaissance: "",
     });
+
+    const CLAVIER_CHARS = [
+        "A", "B", "C", "D", "E", "F", "G", "H", "I", "J",
+        "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T",
+        "U", "V", "W", "X", "Y", "Z", "É", "È", "À", "-", " "
+    ];
+
+    const GENRE_SPECTRUM = [
+        "Néant", "Particule", "Atome", "Molécule", "Cellule", "Amibe",
+        "Têtard", "Poisson", "Lézard", "Dinosaure", "Poule", "Oeuf",
+        "Hameçon", "Hamac", "Hammam", "Hamster", "Hologramme",
+        "Homme",
+        "Homogène", "Homonyme", "Homologue", "Immeuble",
+        "Fauteuil", "Faucon", "Faux", "Farniente", "Fantôme",
+        "Ferme", "Ferment", "Fermoir",
+        "Femme",
+        "Flemme", "Flamme", "Flamant", "Flan",
+        "Loutre", "Lutin", "Licorne", "Cyborg", "Robot", "Android",
+        "Gazeux", "Liquide", "Solide", "Plasma", "Introuvable"
+    ];
 
     const [lastRoll, setLastRoll] = useState<number | null>(null);
 
@@ -132,7 +151,7 @@ export default function SeniorForm() {
             start: {m: 10, d: 23}, end: {m: 11, d: 21}
         },
         "Sagittaire": {
-            matches: ["Bélier", "Gémeaux", "Lion", "Balance", "Verseau"],
+            matches: ["Bélier", "Gémeaux", "Lion"],
             start: {m: 11, d: 22}, end: {m: 12, d: 21}
         },
         "Capricorne": {
@@ -208,6 +227,85 @@ export default function SeniorForm() {
 
     // -------------------------------------
 
+    // --- LOGIQUE CLAVIER VIRTUEL INFERNAL ---
+    const [showKeyboard, setShowKeyboard] = useState(false);
+    const [keyboardKeys, setKeyboardKeys] = useState<string[]>([]);
+
+    // Initialisation du clavier mélangé
+    useEffect(() => {
+        setKeyboardKeys([...CLAVIER_CHARS].sort(() => Math.random() - 0.5));
+    }, []);
+
+    const shuffleKeyboard = () => {
+        setKeyboardKeys(prev => [...prev].sort(() => Math.random() - 0.5));
+    };
+
+    const handleVirtualKeyClick = (char: string) => {
+        setFormData(prev => ({...prev, prenom: prev.prenom + char}));
+        shuffleKeyboard(); // Le mélange se fait APRES chaque clic
+    };
+
+    const handleVirtualBackspace = () => {
+        setFormData(prev => ({...prev, prenom: prev.prenom.slice(0, -1)}));
+        shuffleKeyboard();
+    };
+
+    // --------------------------------------
+
+    // --- LOGIQUE CAPTCHA INFERNAL (3 ÉTAPES) ---
+    const [captchaSolved, setCaptchaSolved] = useState(false);
+    const [captchaStep, setCaptchaStep] = useState(1); // 1, 2, ou 3
+
+    // États pour les réponses
+    const [mathAnswer, setMathAnswer] = useState("");
+    const [sliderValue, setSliderValue] = useState(500); // Départ au milieu
+    const [reverseText, setReverseText] = useState("");
+    const [captchaError, setCaptchaError] = useState("");
+
+    const verifyStep1 = () => {
+        // Question : 15 + 10 * 2 = ? (La réponse est 35, pas 50)
+        if (mathAnswer === "35") {
+            setCaptchaStep(2);
+            setCaptchaError("");
+        } else {
+            setCaptchaError("Calcul incorrect. Respectez les priorités opératoires.");
+        }
+    };
+
+    const verifyStep2 = () => {
+        // Cible : 777
+        if (sliderValue === 777) {
+            setCaptchaStep(3);
+            setCaptchaError("");
+        } else {
+            setCaptchaError(`Précision insuffisante. Valeur actuelle : ${sliderValue}. Cible : 777.`);
+        }
+    };
+
+    const verifyStep3 = () => {
+        // Phrase : "Je suis humain" -> "niamuh sius eJ"
+        if (reverseText === "niamuh sius eJ") {
+            setCaptchaSolved(true);
+            setCaptchaError("");
+        } else {
+            setCaptchaError("Phrase incorrecte. N'oubliez pas : tout doit être inversé.");
+        }
+    };
+
+    // --------------------------------------
+
+    // --- LOGIQUE SLIDER GENRE ---
+    const [sliderGenreIndex, setSliderGenreIndex] = useState(0);
+
+    const handleGenderSlide = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const idx = parseInt(e.target.value);
+        setSliderGenreIndex(idx);
+        // On met à jour le formulaire avec la valeur textuelle correspondante
+        setFormData(prev => ({...prev, sexe: GENRE_SPECTRUM[idx]}));
+    };
+
+    // --------------------------------------
+
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -225,32 +323,184 @@ export default function SeniorForm() {
 
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
+                            {/* --- REMPLACER LE BLOC PRÉNOM PAR CECI --- */}
+                            <div className="relative">
                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Prénom
+                                    Prénom <span className="text-xs text-red-500">(Clavier sécurisé obligatoire)</span>
                                 </label>
+
+                                {/* Input en lecture seule qui ouvre le clavier au clic */}
                                 <input
                                     type="text"
                                     name="prenom"
                                     value={formData.prenom}
-                                    onChange={handleChange}
-                                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                                    readOnly
+                                    onClick={() => setShowKeyboard(true)}
+                                    className="cursor-pointer w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 select-none"
+                                    placeholder="Cliquez pour écrire..."
                                     required
                                 />
+
+                                {/* LE CLAVIER INFERNAL */}
+                                {showKeyboard && (
+                                    <div
+                                        className="absolute z-50 top-full left-0 mt-2 w-full p-4 bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 animate-in fade-in slide-in-from-top-2">
+                                        <div className="flex justify-between items-center mb-2">
+                                            <span
+                                                className="text-xs text-gray-500">Disposition aléatoire sécurisée</span>
+                                            <button
+                                                type="button"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    setShowKeyboard(false);
+                                                }}
+                                                className="text-xs text-red-500 hover:text-red-700 font-bold px-2"
+                                            >
+                                                FERMER
+                                            </button>
+                                        </div>
+
+                                        <div className="grid grid-cols-6 gap-1">
+                                            {keyboardKeys.map((char, index) => (
+                                                <button
+                                                    key={`${char}-${index}`} // Clé unique pour forcer le re-render
+                                                    type="button"
+                                                    onClick={() => handleVirtualKeyClick(char)}
+                                                    className="h-10 bg-gray-100 hover:bg-blue-100 dark:bg-gray-700 dark:hover:bg-blue-900 text-gray-900 dark:text-white rounded font-bold transition-all active:scale-95 text-sm md:text-base"
+                                                >
+                                                    {char === " " ? "␣" : char}
+                                                </button>
+                                            ))}
+
+                                            <button
+                                                type="button"
+                                                onClick={handleVirtualBackspace}
+                                                className="col-span-2 h-10 bg-red-100 hover:bg-red-200 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded font-medium text-xs uppercase"
+                                            >
+                                                ⌫ Effacer
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Nom
+                                    Nom de famille
                                 </label>
-                                <input
-                                    type="text"
-                                    name="nom"
-                                    value={formData.nom}
-                                    onChange={handleChange}
-                                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-                                    required
-                                />
+
+                                {captchaSolved ? (
+                                    /* LE VRAI CHAMP (Une fois débloqué) */
+                                    <div className="animate-in zoom-in duration-300">
+                                        <input
+                                            type="text"
+                                            name="nom"
+                                            value={formData.nom}
+                                            onChange={handleChange}
+                                            className="w-full px-4 py-2 border-2 border-green-500 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                                            placeholder="Enfin..."
+                                            required
+                                        />
+                                        <p className="text-xs text-green-600 mt-1">Identité vérifiée.</p>
+                                    </div>
+                                ) : (
+                                    /* LE CAPTCHA INFERNAL */
+                                    <div
+                                        className="p-4 bg-red-50 dark:bg-red-900/10 border-2 border-red-200 dark:border-red-800 rounded-xl relative overflow-hidden">
+                                        <div
+                                            className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-bl">
+                                            SÉCURITÉ {captchaStep}/3
+                                        </div>
+
+                                        {/* ÉTAPE 1 : MATHS */}
+                                        {captchaStep === 1 && (
+                                            <div className="space-y-3">
+                                                <p className="text-sm font-bold text-red-800 dark:text-red-200">
+                                                    Prouvez votre intelligence :
+                                                    <br/>
+                                                    <span className="text-lg font-mono">15 + 10 × 2 = ?</span>
+                                                </p>
+                                                <div className="flex gap-2">
+                                                    <input
+                                                        type="number"
+                                                        className="w-20 px-2 py-1 border rounded text-black"
+                                                        value={mathAnswer}
+                                                        onChange={(e) => setMathAnswer(e.target.value)}
+                                                    />
+                                                    <button
+                                                        type="button"
+                                                        onClick={verifyStep1}
+                                                        className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-sm"
+                                                    >
+                                                        Vérifier
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {/* ÉTAPE 2 : SLIDER DE PRÉCISION */}
+                                        {captchaStep === 2 && (
+                                            <div className="space-y-3">
+                                                <p className="text-sm font-bold text-red-800 dark:text-red-200">
+                                                    Calibrage biométrique :
+                                                    <br/>
+                                                    <span className="text-xs font-normal">Glissez le curseur EXACTEMENT sur 777.</span>
+                                                </p>
+                                                <div className="flex flex-col items-center gap-2">
+                                                    <input
+                                                        type="range"
+                                                        min="0"
+                                                        max="1000"
+                                                        value={sliderValue}
+                                                        onChange={(e) => setSliderValue(parseInt(e.target.value))}
+                                                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-red-600"
+                                                    />
+                                                    <div
+                                                        className="font-mono text-xl font-bold text-red-600">{sliderValue}</div>
+                                                    <button
+                                                        type="button"
+                                                        onClick={verifyStep2}
+                                                        className="w-full px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-sm"
+                                                    >
+                                                        Confirmer 777
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {/* ÉTAPE 3 : INVERSION DE TEXTE */}
+                                        {captchaStep === 3 && (
+                                            <div className="space-y-3">
+                                                <p className="text-sm font-bold text-red-800 dark:text-red-200">
+                                                    Test de conformité miroir :
+                                                    <br/>
+                                                    <span className="text-xs font-normal">Écrivez "Je suis humain" à l'envers.</span>
+                                                </p>
+                                                <input
+                                                    type="text"
+                                                    className="w-full px-2 py-1 border rounded text-black text-sm"
+                                                    placeholder="ex: niamuh..."
+                                                    value={reverseText}
+                                                    onChange={(e) => setReverseText(e.target.value)}
+                                                />
+                                                <button
+                                                    type="button"
+                                                    onClick={verifyStep3}
+                                                    className="w-full px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-sm"
+                                                >
+                                                    Déverrouiller le champ Nom
+                                                </button>
+                                            </div>
+                                        )}
+
+                                        {/* MESSAGE D'ERREUR GÉNÉRAL */}
+                                        {captchaError && (
+                                            <p className="text-xs text-red-600 font-bold mt-2 animate-pulse">
+                                                ⚠️ {captchaError}
+                                            </p>
+                                        )}
+                                    </div>
+                                )}
                             </div>
                         </div>
 
@@ -303,20 +553,36 @@ export default function SeniorForm() {
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Sexe
+                                    Identité Biologique
                                 </label>
-                                <select
-                                    name="sexe"
-                                    value={formData.sexe}
-                                    onChange={handleChange}
-                                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-                                    required
-                                >
-                                    <option value="">-- Sélectionner --</option>
-                                    <option value="M">Masculin</option>
-                                    <option value="F">Féminin</option>
-                                    <option value="Autre">Autre</option>
-                                </select>
+
+                                <div
+                                    className="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg border border-gray-300 dark:border-gray-600">
+                                    {/* Affichage de la valeur actuelle */}
+                                    <div className="mb-4 text-center">
+                    <span className={`text-2xl font-bold transition-all duration-75 "text-gray-500"`}>
+                      {formData.sexe || "?"}
+                    </span>
+                                    </div>
+
+                                    {/* Le Slider Insupportable */}
+                                    <input
+                                        type="range"
+                                        min="0"
+                                        max={GENRE_SPECTRUM.length - 1}
+                                        value={sliderGenreIndex}
+                                        onChange={handleGenderSlide}
+                                        className="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 accent-blue-600 hover:accent-blue-700"
+                                        step="1"
+                                        title="Bonne chance"
+                                    />
+
+                                    <div className="flex justify-between text-[10px] text-gray-400 mt-1 px-1">
+                                        <span>Néant</span>
+                                        <span>???</span>
+                                        <span>Introuvable</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         {/* --- REMPLACER L'ANCIEN BLOC DATE DE NAISSANCE PAR CECI --- */}
@@ -329,10 +595,13 @@ export default function SeniorForm() {
                   Identifiez votre signe astro en cochant tous les signes compatibles avec celui-ci.
                 </span>
                                 <p>
-                                    <Link
-                                        to={"https://cdn0.mariages.net/article/2847/original/960/jpg/57482-zodiac-compatibility-chart-1x1-fr.webp"}>
+                                    <a
+                                        href="https://cdn0.mariages.net/article/2847/original/960/jpg/57482-zodiac-compatibility-chart-1x1-fr.webp"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
                                         [Cliquez] Image d'aide Astrologique
-                                    </Link>
+                                    </a>
 
                                 </p>
                             </label>
