@@ -43,7 +43,7 @@ export default function Women() {
           }
         }
         .gradient-text {
-          background: linear-gradient(90deg, #F12FFD, #9F33E6, #F12FFD, #9F33E6);
+          background: linear-gradient(90deg, #FF8DC7, #B88EE8, #FF7FD4, #B88EE8);
           background-size: 200% 200%;
           animation: gradient-animation 3s ease infinite;
           -webkit-background-clip: text;
@@ -83,10 +83,22 @@ export default function Women() {
               onClick={() => scrollToSection('frise')}
               className="text-sm text-white hover:text-white/80 transition-colors text-left w-full flex items-center gap-2 group"
             >
+              <div className="flex flex-col items-center gap-1 flex-shrink-0">
+                <div className="w-2 h-2 rounded-full bg-white group-hover:scale-125 transition-transform"></div>
+                <div className="w-px h-4 bg-white/40"></div>
+              </div>
+              <span className="leading-tight drop-shadow">Frise chronologique</span>
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={() => scrollToSection('interview')}
+              className="text-sm text-white hover:text-white/80 transition-colors text-left w-full flex items-center gap-2 group"
+            >
               <div className="flex-shrink-0">
                 <div className="w-2 h-2 rounded-full bg-white group-hover:scale-125 transition-transform"></div>
               </div>
-              <span className="leading-tight drop-shadow">Frise chronologique</span>
+              <span className="leading-tight drop-shadow">Interview des participants</span>
             </button>
           </li>
         </ul>
@@ -94,8 +106,8 @@ export default function Women() {
 
       <PageLayout
         title="FEMMES & INFORMATIQUE"
-        gradientFrom="from-[#FF1B8D]"
-        gradientVia="via-[#C77DFF]"
+        gradientFrom="from-[#FFA3D1]"
+        gradientVia="via-[#E0B3FF]"
         titleColor="text-[#F12FFD]"
         hideTitle={true}
         liquidGlassHeader={true}
@@ -117,7 +129,7 @@ export default function Women() {
         <div className="w-full mx-auto">
 
         {/* Carousel de flyers */}
-        <div id="flyers" className="mb-16 flex flex-col items-center scroll-mt-24">
+        <div id="flyers" className="mb-16 flex flex-col items-center scroll-mt-32">
           <h2 className="text-3xl font-bold text-white mb-6 text-center drop-shadow-lg">
             Quelques chiffres clés
           </h2>
@@ -175,7 +187,7 @@ export default function Women() {
         </div>
 
         {/* Frise chronologique interactive */}
-        <div id="frise" className="mb-12 scroll-mt-24">
+        <div id="frise" className="mb-12 scroll-mt-32">
           <h2 className="text-3xl font-bold text-white mb-6 text-center drop-shadow-lg">
             Petit point d'histoire : cliquez pour faire apparaître les noms de ces figures féminines
           </h2>
@@ -190,6 +202,27 @@ export default function Women() {
                 src="https://view.genially.com/693207046c159accb7ecc690"
                 allowFullScreen={true}
               />
+            </div>
+          </div>
+        </div>
+
+        {/* Section vidéo interview */}
+        <div id="interview" className="mb-16 flex flex-col items-center scroll-mt-32">
+          <h2 className="text-3xl font-bold text-white mb-6 text-center drop-shadow-lg">
+            Interview des participants de la Nuit de l'Info sur le sujet
+          </h2>
+
+          <div className="relative w-full max-w-4xl mx-auto">
+            <div className="relative w-full rounded-lg shadow-2xl overflow-hidden bg-white/10 backdrop-blur-md border border-white/20">
+              <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+                <iframe
+                  className="absolute top-0 left-0 w-full h-full"
+                  src="https://www.youtube.com/embed/_dINadwG3lQ"
+                  title="Interview des participants de la Nuit de l'Info"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </div>
             </div>
           </div>
         </div>

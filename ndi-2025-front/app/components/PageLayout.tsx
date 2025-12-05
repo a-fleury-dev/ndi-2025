@@ -38,6 +38,10 @@ export function PageLayout({ children, title, gradientFrom, gradientVia, titleCo
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-purple-500/25 rounded-full blur-3xl" style={{ animation: 'float-fast 18s ease-in-out infinite' }}></div>
             <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-blue-500/20 rounded-full blur-3xl" style={{ animation: 'float-medium 22s ease-in-out infinite reverse' }}></div>
             <div className="absolute bottom-1/4 right-1/4 w-[350px] h-[350px] bg-fuchsia-500/25 rounded-full blur-3xl" style={{ animation: 'float-slow 17s ease-in-out infinite reverse' }}></div>
+            {/* Transitions blanches subtiles */}
+            <div className="absolute top-[10%] right-[30%] w-[300px] h-[300px] bg-white/15 rounded-full blur-3xl" style={{ animation: 'float-fast 25s ease-in-out infinite' }}></div>
+            <div className="absolute bottom-[15%] left-[20%] w-[250px] h-[250px] bg-white/12 rounded-full blur-3xl" style={{ animation: 'float-medium 20s ease-in-out infinite reverse' }}></div>
+            <div className="absolute top-[60%] right-[15%] w-[200px] h-[200px] bg-white/10 rounded-full blur-2xl" style={{ animation: 'float-slow 23s ease-in-out infinite' }}></div>
           </div>
         </>
       )}
