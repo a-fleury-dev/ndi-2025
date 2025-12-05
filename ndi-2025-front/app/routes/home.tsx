@@ -5,7 +5,7 @@ import { Footer } from "../components/Footer";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "NIRD - Numérique Inclusif Responsable Durable" },
+    { title: "NDI-ZIGOTTOS" },
     { name: "description", content: "Association dédiée à promouvoir un numérique plus inclusif, responsable et durable pour tous." },
   ];
 }

@@ -1,0 +1,11 @@
+Model Information:
+* title:	ordinateur
+* source:	https://sketchfab.com/3d-models/ordinateur-6cb7059110ba464b872a67dccd7b457c
+* author:	Renaulde (https://sketchfab.com/Renaulde)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "ordinateur" (https://sketchfab.com/3d-models/ordinateur-6cb7059110ba464b872a67dccd7b457c) by Renaulde (https://sketchfab.com/Renaulde) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
