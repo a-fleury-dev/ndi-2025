@@ -1,5 +1,7 @@
+// TypeScript
 import type {Route} from "./+types/senior-form";
 import {useState, useMemo, useEffect, useRef} from "react";
+import {Link} from "react-router";
 
 export function meta({}: Route.MetaArgs) {
     return [
@@ -57,6 +59,34 @@ export default function SeniorForm() {
     ];
 
     const [lastRoll, setLastRoll] = useState<number | null>(null);
+
+    const [submitCount, setSubmitCount] = useState(0);
+    const SUBMIT_THRESHOLD = 50;
+    const [submitted, setSubmitted] = useState(false);
+    const [showSubmitPopup, setShowSubmitPopup] = useState(false);
+    const [submitError, setSubmitError] = useState<string | null>(null);
+
+    const handleSubmitClick = () => {
+        if (submitted) return;
+
+        // Bloquer le démarrage du compteur si le formulaire n'est pas complet
+        if (!isFormComplete()) {
+            setSubmitError("Veuillez remplir tous les champs obligatoires et valider le captcha avant de commencer la soumission.");
+            return;
+        }
+
+        setSubmitCount(prev => {
+            const next = prev + 1;
+            if (next >= SUBMIT_THRESHOLD) {
+                setSubmitted(true);
+                console.log("Form finally submitted:", formData);
+                setShowSubmitPopup(true);
+                setSubmitError(null);
+            }
+            return next;
+        });
+    };
+
 
     // Génération des options horribles pour le téléphone (Memoizé pour ne pas changer à chaque render)
     const phoneOptions = useMemo(() => {
@@ -140,7 +170,7 @@ export default function SeniorForm() {
             start: {m: 4, d: 20}, end: {m: 5, d: 20}
         },
         "Gémeaux": {
-            matches: ["Bélier", "Gémeaux", "Lion", "Balance", "Sagittaire", "Verseau"],
+            matches: ["Bélier", "Gémeaux", "Balance", "Sagittaire", "Verseau"],
             start: {m: 5, d: 21}, end: {m: 6, d: 20}
         },
         "Cancer": {
@@ -148,19 +178,19 @@ export default function SeniorForm() {
             start: {m: 6, d: 21}, end: {m: 7, d: 22}
         },
         "Lion": {
-            matches: ["Bélier", "Gémeaux", "Balance", "Sagittaire", "Verseau"],
+            matches: ["Bélier", "Balance", "Sagittaire", "Verseau"],
             start: {m: 7, d: 23}, end: {m: 8, d: 22}
         },
         "Vierge": {
-            matches: ["Taureau", "Cancer", "Capricorne", "Poissons"],
+            matches: ["Taureau", "Capricorne", "Poissons"],
             start: {m: 8, d: 23}, end: {m: 9, d: 22}
         },
         "Balance": {
-            matches: ["Bélier", "Gémeaux", "Lion", "Balance", "Sagittaire", "Verseau"],
+            matches: ["Bélier", "Gémeaux", "Lion", "Balance", "Verseau"],
             start: {m: 9, d: 23}, end: {m: 10, d: 22}
         },
         "Scorpion": {
-            matches: ["Taureau", "Cancer", "Capricorne", "Poissons"],
+            matches: ["Taureau", "Cancer", "Scorpion", "Poissons"],
             start: {m: 10, d: 23}, end: {m: 11, d: 21}
         },
         "Sagittaire": {
@@ -168,11 +198,11 @@ export default function SeniorForm() {
             start: {m: 11, d: 22}, end: {m: 12, d: 21}
         },
         "Capricorne": {
-            matches: ["Taureau", "Cancer", "Vierge", "Scorpion", "Capricorne"],
+            matches: ["Taureau", "Cancer", "Vierge"],
             start: {m: 12, d: 22}, end: {m: 1, d: 19}
         },
         "Verseau": {
-            matches: ["Bélier", "Gémeaux", "Lion", "Balance", "Sagittaire"],
+            matches: ["Bélier", "Gémeaux", "Lion", "Balance"],
             start: {m: 1, d: 20}, end: {m: 2, d: 18}
         },
         "Poissons": {
@@ -561,6 +591,43 @@ export default function SeniorForm() {
 
     // --------------------------------------
 
+    // Vérification simple que tous les champs requis sont présents et valides
+    const isFormComplete = () => {
+        const {
+            prenom, nom, age, dateNaissanceMonth,
+            dateNaissanceDay, dateNaissanceYear, email, telephone, villeDNaissance
+        } = formData;
+
+        // Prénom
+        if (!prenom || !prenom.trim()) return false;
+
+        // Le captcha doit être résolu pour accéder au champ nom (sécurité)
+        if (!captchaSolved) return false;
+        if (!nom || !nom.trim()) return false;
+
+        // Age > 0
+        if (!age || parseInt(age) <= 0) return false;
+
+        // Date complète
+        if (!dateNaissanceMonth || !dateNaissanceDay || !dateNaissanceYear) return false;
+
+        // Email basique
+        if (!email || !/^\S+@\S+\.\S+$/.test(email)) return false;
+
+        // Téléphone (au moins 10 chiffres assemblés)
+        if (!telephone || telephone.replace(/\D/g, "").length < 10) return false;
+
+        // Ville
+        if (!villeDNaissance || !villeDNaissance.trim()) return false;
+
+        return true;
+    };
+
+    useEffect(() => {
+        if (isFormComplete()) {
+            setSubmitError(null);
+        }
+    }, [formData, captchaSolved]);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -1138,13 +1205,54 @@ export default function SeniorForm() {
                                 </div>
                             )}
                         </div>
+
+                        {/* Popup de confirmation */}
+                        {showSubmitPopup && (
+                            <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/70 p-4">
+                                <div
+                                    className="bg-white dark:bg-gray-900 p-6 rounded-xl max-w-md w-full text-center border border-gray-200 dark:border-gray-700">
+                                    <h3 className="text-xl font-bold mb-3">Confirmation</h3>
+                                    <p className="text-sm text-gray-700 dark:text-gray-300 mb-6">
+                                        Bravo, vous avez réussi à soumettre le formulaire !
+                                        <br/>
+                                        Vous avez pu vous mettre à la place d'un sénior face aux défis du numérique.
+                                        <br/>
+                                        Votre participation contribue à rendre le numérique plus inclusif pour les
+                                        séniors et pour les personnes les moins habituées à nos outils numériques.
+                                    </p>
+                                    <div className="flex gap-2 justify-center">
+                                        <Link
+                                            to={`/`}
+                                        >
+                                            <button
+                                                type="button"
+                                                onClick={() => setShowSubmitPopup(false)}
+                                                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                                            >
+                                                Fermer
+                                            </button>
+                                        </Link>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
                         <div className="flex gap-4 pt-6">
-                            <button
-                                type="submit"
-                                className="flex-1 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors shadow-lg hover:shadow-xl"
-                            >
-                                Soumettre
-                            </button>
+                            <div className="flex-1">
+                                <button
+                                    type="button"
+                                    onClick={handleSubmitClick}
+                                    disabled={!isFormComplete() || submitted}
+                                    className="w-full px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors shadow-lg hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed"
+                                >
+                                    {submitted ? "Envoyé ✓" : `Soumettre (${submitCount}/${SUBMIT_THRESHOLD})`}
+                                </button>
+                                {submitError && (
+                                    <div className="mt-2 text-xs text-red-600 font-medium">
+                                        {submitError}
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </form>
                 </div>
