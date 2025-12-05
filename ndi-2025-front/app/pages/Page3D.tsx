@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ThreeScene from "~/components/3d/ThreeScene";
+import { useNavigate } from "react-router-dom";
 
 const slides = [
     { model: "/models/smartphone/smartphone.gltf", title: "Smartphone", description: `
@@ -38,9 +39,10 @@ const slides = [
     `, position: [0, -1, 0] as [number, number, number], scale: 1.5}
 ];
 
-export default function Home() {
+export default function Page3D() {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isRotating, setIsRotating] = useState(true);
+    const navigate = useNavigate();
 
     const handlePrev = () => {
         setCurrentIndex((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
@@ -50,6 +52,10 @@ export default function Home() {
         setCurrentIndex((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
     };
 
+    const handleHome = () => {
+        navigate("/");
+    };
+
     return (
         <div style={{ display: "flex", height: "100vh", alignItems: "center" }}>
             {/* Flèche gauche */}
@@ -57,12 +63,20 @@ export default function Home() {
                 ◀
             </button>
 
-            <button
-                onClick={() => setIsRotating(!isRotating)}
-                style={{ position: "absolute", top: "1rem", right: "1rem", padding: "0.5rem 1rem", cursor: "pointer" }}
-            >
-                {isRotating ? "Pause" : "Play"}
-            </button>
+            <div style={{ position: "absolute", top: "1rem", right: "1rem", display: "flex", gap: "0.5rem" }}>
+                <button
+                    onClick={handleHome}
+                    style={buttonStyle}
+                >
+                    🏠 Home
+                </button>
+                <button
+                    onClick={() => setIsRotating(!isRotating)}
+                    style={buttonStyle}
+                >
+                    {isRotating ? "⏸ Pause" : "▶ Play"}
+                </button>
+            </div>
 
             {/* Scène 3D */}
             <div style={{ flex: 2, height: "100%" }}>
@@ -95,4 +109,9 @@ const arrowStyle: React.CSSProperties = {
     border: "none",
     cursor: "pointer",
     padding: "1rem",
+};
+
+const buttonStyle: React.CSSProperties = {
+    padding: "0.5rem 1rem",
+    cursor: "pointer",
 };
