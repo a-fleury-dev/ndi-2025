@@ -2,7 +2,7 @@ import { Link } from 'react-router';
 
 export function Footer() {
   return (
-    <footer className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md shadow-lg">
+    <footer className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md shadow-lg z-20">
       {/* Ligne de séparation avec gradient */}
       <div className="h-1 bg-gradient-to-r from-[#9F33E6] via-[#F12FFD] via-[#FFD700] to-[#0A83CE]"></div>
 

@@ -19,7 +19,8 @@ app/
 │   ├── elderly.tsx       # Page inclusion personnes âgées (/elderly)
 │   ├── women.tsx         # Page femmes dans l'informatique (/women)
 │   ├── chatbot.tsx       # Page chatbot (/chatbot)
-│   └── reconditioning.tsx # Page reconditionnement (/reconditioning)
+│   ├── reconditioning.tsx # Page reconditionnement (/reconditioning)
+|   └── nird.tsx
 └── components/
     ├── Header.tsx         # Header avec logos
     ├── HeroSection.tsx    # Section héro avec zones interactives

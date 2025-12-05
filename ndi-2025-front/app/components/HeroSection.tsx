@@ -54,11 +54,13 @@ export function HeroSection() {
 
       {/* Central Logo */}
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
+      <Link to="/nird">
         <img
           src="/nird-logo.png"
           alt="NIRD - Numérique Inclusif Responsable Durable"
           className="w-96 h-auto drop-shadow-2xl"
         />
+      </Link>
       </div>
 
       {/* Interactive Zones */}

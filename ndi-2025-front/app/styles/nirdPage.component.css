@@ -1,0 +1,70 @@
+/* Animated, morphing smaller blobs background */
+/* Make the background a bit less opaque by using lighter gradient colors with alpha */
+
+html, body {
+  min-height: 100%;
+}
+
+
+
+html, body {
+  /* Softer gradient with transparency */
+  background: linear-gradient(
+    to right,
+    rgba(220, 94, 212, 0.6),
+    rgba(31, 103, 174, 0.6)
+  );
+}
+
+.nird-text {
+  background-color: transparent; /* transparent background */
+  color: #0f0f14; /* readable text color over soft gradient */
+}
+
+.margin-top {
+  margin-top: 10vh;
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 4rem;
+  color: #f89e18;
+  background-color: transparent;
+}
+
+.sub-title {
+  font-size: 1.5rem;
+  text-align: center;
+  margin-bottom: 4rem;
+  color: #f89e18;
+  background-color: transparent;
+}
+
+.text-and-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+
+.size{
+    width: 40vw;
+    height: auto;
+}
+
+.paragraph {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: white;
+  background-color: transparent;
+  margin-bottom: 2rem;
+  text-align: justify;
+/* soft glow instead of directional shadow */
+text-shadow:
+    0 0 8px rgba(220,94,212,0.8),
+    0 0 18px rgba(31,103,174,0.6),
+    0 0 30px rgba(220,94,212,0.35);
+}
