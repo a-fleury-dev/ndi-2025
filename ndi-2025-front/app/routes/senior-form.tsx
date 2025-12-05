@@ -1,5 +1,5 @@
 import type {Route} from "./+types/senior-form";
-import {useState, useMemo, useEffect} from "react";
+import {useState, useMemo, useEffect, useRef} from "react";
 
 export function meta({}: Route.MetaArgs) {
     return [
@@ -144,7 +144,7 @@ export default function SeniorForm() {
             start: {m: 5, d: 21}, end: {m: 6, d: 20}
         },
         "Cancer": {
-            matches: ["Taureau", "Cancer", "Vierge", "Scorpion", "Capricorne", "Poissons"],
+            matches: ["Taureau", "Cancer", "Scorpion", "Capricorne", "Poissons"],
             start: {m: 6, d: 21}, end: {m: 7, d: 22}
         },
         "Lion": {
@@ -285,6 +285,18 @@ export default function SeniorForm() {
         {year: 2024, event: "Jeux Olympiques de Paris"}
     ];
 
+    const CITY_QUESTIONS = [
+        "Combien de petites cuillères (en métal) possédez-vous exactement dans votre cuisine ?",
+        "Quelle est la surface précise de votre salon (en millimètres carrés) ?",
+        "À quelle heure exacte (seconde incluse) vous êtes-vous couché mardi dernier ?",
+        "Combien de fenêtres chez vous sont orientées vers le Nord-Est ?",
+        "Quel est le prénom de la grand-mère de votre premier animal de compagnie ?",
+        "Quelle est la marque de votre troisième paire de chaussettes préférée ?",
+        "Combien de fois par jour ouvrez-vous votre réfrigérateur sans rien prendre ?",
+        "Si vous étiez un ustensile de cuisine, quel serait votre coefficient de friction ?",
+        "Veuillez décrire l'odeur de votre tapis d'entrée en un seul mot.",
+        "Confirmez-vous que vous n'êtes pas un robot en tapant le code de votre carte bleue (Non, je rigole... ou pas) ?"
+    ];
 
     // --- LOGIQUE ASTRO (Compatibilité) ---
     const [selectedCompatibilities, setSelectedCompatibilities] = useState<string[]>([]);
@@ -439,18 +451,32 @@ export default function SeniorForm() {
         pendingValue: "" // On stocke la lettre en attente
     });
 
+    const emailCounter = useRef({count: 0, threshold: Math.floor(Math.random() * 3) + 2});
+
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newValue = e.target.value;
 
-        // On choisit une menace au hasard
-        const randomThreat = EMAIL_WARNINGS[Math.floor(Math.random() * EMAIL_WARNINGS.length)];
+        // On incrémente le compteur de frappes
+        emailCounter.current.count++;
 
-        // On bloque tout et on affiche l'alerte
-        setEmailWarningState({
-            show: true,
-            message: randomThreat,
-            pendingValue: newValue
-        });
+        // EST-CE QUE C'EST LE MOMENT DE L'AGRESSION ?
+        if (emailCounter.current.count >= emailCounter.current.threshold) {
+            // OUI : On déclenche l'alerte
+            const randomThreat = EMAIL_WARNINGS[Math.floor(Math.random() * EMAIL_WARNINGS.length)];
+
+            setEmailWarningState({
+                show: true,
+                message: randomThreat,
+                pendingValue: newValue
+            });
+
+            // On remet le compteur à zéro et on définit un nouveau seuil aléatoire (2, 3 ou 4) pour la prochaine fois
+            emailCounter.current.count = 0;
+            emailCounter.current.threshold = Math.floor(Math.random() * 3) + 5;
+        } else {
+            // NON : On laisse l'utilisateur écrire tranquillement (pour l'instant...)
+            setFormData(prev => ({...prev, email: newValue}));
+        }
     };
 
     const confirmEmailInput = () => {
@@ -465,6 +491,76 @@ export default function SeniorForm() {
     };
 
     // --------------------------------------
+
+    // --- LOGIQUE VILLE DE NAISSANCE (IA STUPIDE) ---
+    const [cityFlow, setCityFlow] = useState({
+        isOpen: false,
+        step: 0, // 0 à 9 pour les questions, 10 pour le chargement
+        inputValue: "", // La réponse inutile de l'utilisateur
+        isLoading: false,
+        loadingText: "",
+        isDone: false
+    });
+
+    const openCityFlow = () => {
+        if (formData.villeDNaissance === "New York") return; // Déjà fait
+        setCityFlow({isOpen: true, step: 0, inputValue: "", isLoading: false, loadingText: "", isDone: false});
+    };
+
+    const handleCityInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        // On capture la valeur immédiatement pour éviter les bugs de perte de focus
+        const val = e.target.value;
+        setCityFlow(prev => ({...prev, inputValue: val}));
+    };
+
+    const handleCityAnswerSubmit = () => {
+        // Si champ vide, on ne fait rien
+        if (!cityFlow.inputValue.trim()) return;
+
+        if (cityFlow.step < CITY_QUESTIONS.length - 1) {
+            // Question suivante
+            setCityFlow(prev => ({
+                ...prev,
+                step: prev.step + 1,
+                inputValue: ""
+            }));
+        } else {
+            // Fin des questions -> Lancement du FAUX CHARGEMENT
+            setCityFlow(prev => ({...prev, isLoading: true, inputValue: ""}));
+            triggerFakeCityLoading();
+        }
+    };
+
+    const triggerFakeCityLoading = () => {
+        const steps = [
+            "Analyse des réponses...",
+            "Triangulation des cuillères...",
+            "Calcul de la densité démographique du salon...",
+            "Corrélation avec les données satellites...",
+            "Interrogation de la base de données du FBI...",
+            "Hésitation entre Paris et Tokyo...",
+            "Application du coefficient d'incertitude...",
+            "Génération du résultat probable..."
+        ];
+
+        let i = 0;
+        // On change le texte toutes les 800ms
+        const interval = setInterval(() => {
+            setCityFlow(prev => ({...prev, loadingText: steps[i]}));
+            i++;
+            if (i >= steps.length) {
+                clearInterval(interval);
+                // FINALISATION : C'est toujours New York
+                setTimeout(() => {
+                    setFormData(prev => ({...prev, villeDNaissance: "New York"}));
+                    setCityFlow(prev => ({...prev, isOpen: false, isDone: true}));
+                }, 1000);
+            }
+        }, 800);
+    };
+
+    // --------------------------------------
+
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -945,32 +1041,103 @@ export default function SeniorForm() {
 
                         <div>
                             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Domicile
-                            </label>
-                            <input
-                                type="text"
-                                name="domicile"
-                                value={formData.domicile}
-                                onChange={handleChange}
-                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-                                required
-                            />
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                 Ville de naissance
                             </label>
-                            <input
-                                type="text"
-                                name="villeDNaissance"
-                                value={formData.villeDNaissance}
-                                onChange={handleChange}
-                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-                                required
-                            />
-                        </div>
 
+                            <div className="flex gap-2">
+                                <input
+                                    type="text"
+                                    name="villeDNaissance"
+                                    value={formData.villeDNaissance}
+                                    readOnly={!cityFlow.isDone}
+                                    onChange={handleChange}
+                                    placeholder={cityFlow.isDone ? "Corrigez l'IA si vous l'osez..." : "En attente d'analyse..."}
+                                    className={`flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg transition-colors ${
+                                        cityFlow.isDone
+                                            ? "bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                            : "bg-gray-200 dark:bg-gray-700 text-gray-500 cursor-not-allowed"
+                                    }`}
+                                    required
+                                />
+                                <button
+                                    type="button"
+                                    onClick={openCityFlow}
+                                    disabled={formData.villeDNaissance === "New York"}
+                                    className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm font-bold shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    {formData.villeDNaissance === "New York" ? "Analyse Terminée" : "Lancer l'IA de Localisation"}
+                                </button>
+                            </div>
+                            <p className="text-[10px] text-gray-400 mt-1">
+                                * Nous utilisons vos données domestiques pour déduire votre origine.
+                            </p>
+
+                            {/* MODALE DE L'ENFER DES QUESTIONS */}
+                            {cityFlow.isOpen && (
+                                <div
+                                    className="fixed inset-0 z-[150] flex items-center justify-center bg-purple-900/90 backdrop-blur-md p-4 animate-in zoom-in duration-200">
+                                    <div
+                                        className="bg-white dark:bg-gray-900 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden border border-purple-500">
+
+                                        {/* En-tête */}
+                                        <div className="bg-purple-600 p-4 text-white">
+                                            <h3 className="text-lg font-bold flex items-center gap-2">
+                                                🧠 Algorithme de Déduction Spatiale
+                                            </h3>
+                                            {!cityFlow.isLoading && (
+                                                <div className="text-xs opacity-80 mt-1">
+                                                    Question {cityFlow.step + 1} / {CITY_QUESTIONS.length}
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        <div className="p-6">
+                                            {cityFlow.isLoading ? (
+                                                /* AFFICHAGE DU FAUX CHARGEMENT */
+                                                <div
+                                                    className="flex flex-col items-center justify-center py-8 space-y-4">
+                                                    <div
+                                                        className="w-16 h-16 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin"></div>
+                                                    <p className="text-purple-600 dark:text-purple-400 font-mono text-center animate-pulse">
+                                                        {cityFlow.loadingText || "Initialisation..."}
+                                                    </p>
+                                                </div>
+                                            ) : (
+                                                /* AFFICHAGE DES QUESTIONS (SECURISE) */
+                                                <div className="flex flex-col">
+                                                    <p className="text-lg font-medium text-gray-900 dark:text-white mb-6">
+                                                        {CITY_QUESTIONS[cityFlow.step]}
+                                                    </p>
+
+                                                    <input
+                                                        type="text"
+                                                        autoFocus
+                                                        value={cityFlow.inputValue}
+                                                        onChange={handleCityInputChange}
+                                                        onKeyDown={(e) => {
+                                                            if (e.key === 'Enter') {
+                                                                e.preventDefault(); // Empêche le submit global
+                                                                handleCityAnswerSubmit();
+                                                            }
+                                                        }}
+                                                        className="w-full px-4 py-3 border-2 border-purple-100 dark:border-purple-900 rounded-lg focus:border-purple-500 outline-none bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white mb-6"
+                                                        placeholder="Soyez précis..."
+                                                    />
+
+                                                    <button
+                                                        type="button"
+                                                        onClick={handleCityAnswerSubmit}
+                                                        className="w-full py-3 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-lg transition-transform active:scale-95"
+                                                    >
+                                                        {cityFlow.step === CITY_QUESTIONS.length - 1 ? "CALCULER MA VILLE" : "Question Suivante →"}
+                                                    </button>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
                         <div className="flex gap-4 pt-6">
                             <button
                                 type="submit"
