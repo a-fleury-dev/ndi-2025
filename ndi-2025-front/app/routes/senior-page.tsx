@@ -1,5 +1,7 @@
 import type { Route } from "./+types/senior-page";
 import { Link } from "react-router";
+import memphis from '../../public/corporate_menphis_1.png';
+
 
 export function meta({}: Route.MetaArgs) {
     return [
@@ -25,6 +27,7 @@ export default function SeniorPage() {
                 <section className="w-full">
                     <article className="rounded-3xl border border-gray-200 dark:border-gray-800 p-10 bg-white dark:bg-gray-900 shadow-sm">
                         <div className="prose dark:prose-invert max-w-none leading-relaxed text-gray-700 dark:text-gray-300 space-y-6">
+                            <img src={memphis}/>
                             <p>
                                 L'article 2 de la loi n° 2005-102 du 11 février 2005 dispose :
                             </p>
@@ -57,7 +60,7 @@ export default function SeniorPage() {
                         to="/elderly_form"
                         className="inline-flex items-center px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl shadow transition-colors"
                     >
-                        Remplissez-ce formulaire pour envoyer un peu d'amour ❤
+                        REMPLIR LE FORMULAIRE
                     </Link>
                 </div>
             </div>
